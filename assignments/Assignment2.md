@@ -74,9 +74,10 @@ Each question carries 2 points.
   iii. In main method , sum up how many the customer spend.
 
 *****_EXTRA CREDIT_*****
+
 6. Write a Java program that generates an isosceles right angled triangle made of asterisks.  
-  i. function should take input of one equal side as integer. Other than the edges the inner part of the triangle should be empty.  
-  ii. For example input is 6. the function should print—
+   i. function should take input of one equal side as integer. Other than the edges the inner part of the triangle should be empty.  
+   ii. For example input is 6. the function should print—
 
 ```
     *
@@ -87,7 +88,7 @@ Each question carries 2 points.
     ******
 ```
 
-  Here is the prototype you can work with:
+   Here is the prototype you can work with:
 ```java
   public void printIsoscelesTriangle( int n){
 
@@ -173,7 +174,8 @@ However, the number `input` could be a negetive integer. In such case, we need t
 Write a java function to print all perfect number between 1 and n.
 
 i. Perfect number is a positive integer which is equal to the sum of its proper positive divisors *except itself*.
-ii. For example: 6 is the first perfect number, Proper divisors of 6 are 1, 2, 3. Sum of its proper divisors (*except itself*) = 1 + 2 + 3 = 6.  
+ii.  
+For example: 6 is the first perfect number, Proper divisors of 6 are 1, 2, 3. Sum of its proper divisors (*except itself*) = 1 + 2 + 3 = 6.  
 
 ## Analysis
 
