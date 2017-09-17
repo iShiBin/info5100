@@ -1,4 +1,4 @@
-[TOC]
+* [Requirements](#Requirements)
 
 # Requirements
 
@@ -160,25 +160,23 @@ A number i is a divisor of integer m only if  `m%i` equals to `0`. So by iterati
 ## Solution
 
 ```java
-  public void printPerfectNumbers(int n){
-  	for(int m=1; m<=n; m++){
-  		if(isPerfectNumber(m)){
-  			System.out.println(m);
-  		}
-  	}
+public void printPerfectNumbers(int n){
+  for(int m=1; m<=n; m++){
+    if(isPerfectNumber(m)){
+      System.out.println(m);
+    }
   }
-  
-	private boolean isPerfectNumber(int num) {
-		if (num == 0)
-			return false;
+}
 
-		int sum = 0;
-		for (int i = 1; i < Math.sqrt(num); i++) {
-			if (num % i == 0)
-				sum += num / i + i;
-		}
-		return sum - num == num ? true : false;
-	}
+private boolean isPerfectNumber(int num) {
+  if (num == 0) return false;
+  int sum = 0;
+  for (int i = 1; i < Math.sqrt(num); i++) {
+  if (num % i == 0)
+      sum += num / i + i;
+  }
+  return sum - num == num ? true : false;
+}
 ```
 
 # 4. Pizza
