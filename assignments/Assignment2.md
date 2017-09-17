@@ -337,8 +337,8 @@ The last line has as many asterisks as the line number itself.
 **Note**:
 
 * Printing in the console is time consuming so I use StringBuilder cache all the output and print it at last.
-* String "\n" in a StringBuilder means start a new line.
+* String "\n" in a StringBuilder means start a new line. 
 
 # References
-
+ 
 [1] ..\src\Assignment2.java
