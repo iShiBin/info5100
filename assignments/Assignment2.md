@@ -1,5 +1,27 @@
-* [Requirements](#Requirements)
+* [Requirements](#requirements)
+* [Accomplishments](#accomplishments)
+* [1\. Calculate Employee Salary](#1-calculate-employee-salary)
+  * [Analysis](#analysis)
+  * [Solution](#solution)
+* [2\. Sum Digits](#2-sum-digits)
+  * [Analysis](#analysis-1)
+  * [Solution](#solution-1)
+* [3\. Perfect Numbers](#3-perfect-numbers)
+  * [Analysis](#analysis-2)
+  * [Solution](#solution-2)
+* [4\. Pizza](#4-pizza)
+  * [Analysis](#analysis-3)
+  * [Solution](#solution-3)
+* [5\. Customer](#5-customer)
+  * [Analysis](#analysis-4)
+  * [Solution](#solution-4)
+* [6\. Generates Isosceles Right Angled Triangles](#6-generates-isosceles-right-angled-triangles)
+  * [Analysis](#analysis-5)
+  * [Solution](#solution-5)
+* [References](#references)
 
+
+---
 # Requirements
 
 Each question carries 2 points.
@@ -166,9 +188,8 @@ public void printPerfectNumbers(int n){
       System.out.println(m);
     }
   }
-<<<<<<< HEAD
 
-  private boolean isPerfectNumber(int num) {
+private boolean isPerfectNumber(int num) {
   if (num == 0) return false;
   int sum = 0;
   for (int i = 1; i < Math.sqrt(num); i++) {
@@ -177,19 +198,7 @@ public void printPerfectNumbers(int n){
     }
     return sum - num == num ? true : false;
   }
-=======
 }
-
-private boolean isPerfectNumber(int num) {
-  if (num == 0) return false;
-  int sum = 0;
-  for (int i = 1; i < Math.sqrt(num); i++) {
-  if (num % i == 0)
-      sum += num / i + i;
-  }
-  return sum - num == num ? true : false;
-}
->>>>>>> 8a7eccde49d00ecd037f5d641b5f72aa74caef7e
 ```
 
 # 4. Pizza
@@ -355,3 +364,4 @@ The last line has as many asterisks as the line number itself.
 # References
 
 [1] ..\src\Assignment2.java
+
