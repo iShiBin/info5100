@@ -168,17 +168,15 @@ A number i is a divisor of integer m only if  `m%i` equals to `0`. So by iterati
   	}
   }
   
-	private boolean isPerfectNumber(int num) {
-		if (num == 0)
-			return false;
-
-		int sum = 0;
-		for (int i = 1; i < Math.sqrt(num); i++) {
-			if (num % i == 0)
-				sum += num / i + i;
-		}
-		return sum - num == num ? true : false;
-	}
+  private boolean isPerfectNumber(int num) {
+	if (num == 0) return false;
+	int sum = 0;
+	for (int i = 1; i < Math.sqrt(num); i++) {
+      if (num % i == 0)
+        sum += num / i + i;
+    }
+    return sum - num == num ? true : false;
+  }
 ```
 
 # 4. Pizza
