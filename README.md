@@ -5,3 +5,16 @@ INFO 5100 (required), Application Engineering and Development: Students will lea
 Through hands-on weekly lab sessions, students practice the development of applications as an assembly of components. Object-Oriented techniques for building business architectures that map to software applications will be introduced. You will learn how to master ways of taking vague requirements and turn them into systems of eco- system scale. 
 
 This class was designed to meet the needs of engineering students with a limited programming background. Students who do have a programming background will learn how to design and architect software the right way.
+
+Here is the tree of this repository.
+
+```
+├── LICENSE
+├── README.md
+├── assignments: actual assigments
+├── build: build output .class files
+├── notes: class notes
+├── ref: referece files
+└── src: Java source code file
+```
+
