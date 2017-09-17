@@ -92,28 +92,28 @@ This is an easy problem, so the code could explain itself.
 ****
 
 ```java
-	public double employeeSalary(double hours) {
-		if (hours <= 0)
-			return 0;
+  public double employeeSalary(double hours) {
+    if (hours <= 0)
+      return 0;
 
-		double salary = 0;
-		if (hours > 48) {
-			// max salary
-			salary += 36 * 15;
-			salary += 5 * 15 * 1.5;
-			salary += (48 - 36 - 5) * 15 * 2;
-		} else if (hours > 41) {
-			salary += 36 * 15;
-			salary += 5 * 15 * 1.5;
-			salary += (hours - 36 - 5) * 15 * 2;
-		} else if (hours > 36) {
-			salary += 36 * 15;
-			salary += (hours - 36) * 15 * 1.5;
-		} else {
-			salary += hours * 15;
-		}
-		return salary;
-	}
+    double salary = 0;
+    if (hours > 48) {
+      // max salary
+      salary += 36 * 15;
+      salary += 5 * 15 * 1.5;
+      salary += (48 - 36 - 5) * 15 * 2;
+    } else if (hours > 41) {
+      salary += 36 * 15;
+      salary += 5 * 15 * 1.5;
+      salary += (hours - 36 - 5) * 15 * 2;
+    } else if (hours > 36) {
+      salary += 36 * 15;
+      salary += (hours - 36) * 15 * 1.5;
+    } else {
+      salary += hours * 15;
+    }
+    return salary;
+  }
 ```
 
 # 2. Sum Digits
@@ -125,7 +125,7 @@ ii. for example input = 37, sum = 3+7 = 10, sum = 1+0 = 1. result = 1.
 
 ## Analysis
 
-Use  `%10` to get the least significant in an integer, and then set the integer to `/10`. Repeat this process until integer is 0. 
+Use  `%10` to get the least significant in an integer, and then set the integer to `/10`. Repeat this process until integer is 0.
 
 **Pre-Processing**
 
@@ -134,21 +134,21 @@ However, the number `input` could be a negetive integer. In such case, we need t
 ## Solution
 
 ```java
-	public int addDigits(int input) {
-		if (input < 0) input = -input;
-		int sum = 0;
-		while (input != 0) {
-			System.out.println(input % 10);
-			sum += input % 10;
-			input /= 10;
-		}
-		return sum;
-	}
+  public int addDigits(int input) {
+    if (input < 0) input = -input;
+    int sum = 0;
+    while (input != 0) {
+      System.out.println(input % 10);
+      sum += input % 10;
+      input /= 10;
+    }
+    return sum;
+  }
 ```
 
 # 3. Perfect Numbers
 
-Write a java function to print all perfect number between 1 and n. 
+Write a java function to print all perfect number between 1 and n.
 
 i. Perfect number is a positive integer which is equal to the sum of its proper positive divisors *except itself*.
 ii. For example: 6 is the first perfect number, Proper divisors of 6 are 1, 2, 3. Sum of its proper divisors (*except itself*) = 1 + 2 + 3 = 6.  
@@ -167,11 +167,11 @@ public void printPerfectNumbers(int n){
     }
   }
 <<<<<<< HEAD
-  
+
   private boolean isPerfectNumber(int num) {
-	if (num == 0) return false;
-	int sum = 0;
-	for (int i = 1; i < Math.sqrt(num); i++) {
+  if (num == 0) return false;
+  int sum = 0;
+  for (int i = 1; i < Math.sqrt(num); i++) {
       if (num % i == 0)
         sum += num / i + i;
     }
@@ -208,24 +208,24 @@ ii. Constructor is needed. Extra-credit for 0.5 point if you write more than 1 r
 
 ```java
 class Pizza{
-	String type, name;
-	double price;
-	int loyaltyPoint;
-	
-	Pizza(){}
-	Pizza(String name) {
-		this.name = name;
-	}
-	Pizza(String name, double price){
-		this.name = name;
-		this.price = price;
-	}
+  String type, name;
+  double price;
+  int loyaltyPoint;
+
+  Pizza(){}
+  Pizza(String name) {
+    this.name = name;
+  }
+  Pizza(String name, double price){
+    this.name = name;
+    this.price = price;
+  }
 }
 ```
 
 # 5. Customer
 
-Write a java class called customer (Add detail as needed) : 
+Write a java class called customer (Add detail as needed) :
 
 i. Attributes needed: customer name and what pizzas customer has ordered.
 ii. Think about what kind of data structure will be used to record the pizza name and numbers for each kind of pizza.( Give me your thought, Extra credit for 1 point)  
@@ -243,28 +243,28 @@ To figure out how much this customer spends, we can simple calculate the money h
 
 ```java
 class Customer {
-	String name;
-	boolean gender;
-	int age;
-	Pizza pizzas[];
+  String name;
+  boolean gender;
+  int age;
+  Pizza pizzas[];
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		Customer bin = new Customer();
+    Customer bin = new Customer();
 
-		// bin starts to order two kinds of pizzas
-		bin.pizzas = new Pizza[2];
-		bin.pizzas[0] = new Pizza("Summer Fire", 10.5, 1);
-		bin.pizzas[1] = new Pizza("Winter Snow", 12.8, 2);
+    // bin starts to order two kinds of pizzas
+    bin.pizzas = new Pizza[2];
+    bin.pizzas[0] = new Pizza("Summer Fire", 10.5, 1);
+    bin.pizzas[1] = new Pizza("Winter Snow", 12.8, 2);
 
-		// sum up the money bin spends
-		double bill = 0;
-		for (Pizza pizza : bin.pizzas) {
-			bill += pizza.price * pizza.number;
-		}
+    // sum up the money bin spends
+    double bill = 0;
+    for (Pizza pizza : bin.pizzas) {
+      bill += pizza.price * pizza.number;
+    }
 
-		System.out.println(bill);
-	}
+    System.out.println(bill);
+  }
 }
 ```
 
@@ -272,23 +272,23 @@ Also, here is the updated version of class **Pizza** definiation.
 
 ```java
 class Pizza{
-	String type, name;
-	double price;
-	int loyaltyPoint;
-	int number; // for 5. Customer
-	
-	Pizza(){}
-	Pizza(String name) {
-		this.name = name;
-	}
-	Pizza(String name, double price){
-		this.name = name;
-		this.price = price;
-	}
-	Pizza(String name, double price, int number){
-		this(name, price);
-		this.number = number;
-	}
+  String type, name;
+  double price;
+  int loyaltyPoint;
+  int number; // for 5. Customer
+
+  Pizza(){}
+  Pizza(String name) {
+    this.name = name;
+  }
+  Pizza(String name, double price){
+    this.name = name;
+    this.price = price;
+  }
+  Pizza(String name, double price, int number){
+    this(name, price);
+    this.number = number;
+  }
 }
 ```
 
@@ -310,48 +310,48 @@ Write a Java program that generates an isosceles right angled triangle made of a
 ```
 ## Analysis
 
-The first line only has one asterisk. 
+The first line only has one asterisk.
 
-All the other lines except the last line have two asterisks, one of which is in the start of the line and the other is in the end. 
+All the other lines except the last line have two asterisks, one of which is in the start of the line and the other is in the end.
 
 The last line has as many asterisks as the line number itself.
 
 ## Solution
 
 ```java
-	public void printIsoscelesTriangle(int n) {
-		if (n <= 0) return;
-		if (n == 1) {
-			System.out.println("*");
-			return;
-		}
-		// first line
-		StringBuilder lines = new StringBuilder("*");
+  public void printIsoscelesTriangle(int n) {
+    if (n <= 0) return;
+    if (n == 1) {
+      System.out.println("*");
+      return;
+    }
+    // first line
+    StringBuilder lines = new StringBuilder("*");
 
-		// following lines
-		for (int i = 1; i < n - 1; i++) {
-			lines.append("\n*");
-			for (int j = 1; j < i; j++)
-				lines.append(" ");
-			lines.append("*");
-		}
-		lines.append("\n");
+    // following lines
+    for (int i = 1; i < n - 1; i++) {
+      lines.append("\n*");
+      for (int j = 1; j < i; j++)
+        lines.append(" ");
+      lines.append("*");
+    }
+    lines.append("\n");
 
-		// last line
-		while (n-- > 0) {
-			lines.append("*");
-		}
+    // last line
+    while (n-- > 0) {
+      lines.append("*");
+    }
 
-		// print all lines in the end
-		System.out.println(lines);
-	}
+    // print all lines in the end
+    System.out.println(lines);
+  }
 ```
 
 **Note**:
 
 * Printing in the console is time consuming so I use StringBuilder cache all the output and print it at last.
-* String "\n" in a StringBuilder means start a new line. 
+* String "\n" in a StringBuilder means start a new line.
 
 # References
- 
+
 [1] ..\src\Assignment2.java
