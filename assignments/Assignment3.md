@@ -1,6 +1,6 @@
-#Assignment 3
+# Assignment 3
 
-##Instructions
+## Instructions
 
 * Max score is 10.
 * Deadline is 11:59PM Sept 30, Saturday.
@@ -9,7 +9,7 @@
 * Upload all your assignments to a single repository named ‘Assignments’.
 * Contact us if any assistance is needed.
 
-##Questions
+## Questions
 
 1. Find the error in the following code and explain in few lines why it is wrong. (Score 1)
    Here is the code.
