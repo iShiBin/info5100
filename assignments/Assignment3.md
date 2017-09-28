@@ -221,14 +221,40 @@ public String removeVowelsFromString(String input) {
 }
 ```
 
-**Note**: Binary search is used to improve algorithm.
+**Note**: Binary search is used to escalate speed.
 
 ### 4. Write a java function to check if two strings are Anagrams or not. (Score 2)
 
 i. The function should take two input strings.
 ii. Should return a boolean ‘true’ if the inputs are Anagrams else return ‘false’.
 
-#### Algorithm
+**Algorithm**
+
+As required in the assignment notes - the characters in the string is case senstive and all the space and punctuation counts. Count up the each char's occurance in s1 and then count down it in s2. If all the number is anagram, then every number in the count should be 0. Otherwise, they are not anagrams.
+
+```java
+    public boolean checkIfTwoStringsAreAnagrams(String s1, String s2) {
+        if(s1 == null || s2 == null) return false;
+      final int number = 128;// alphabet range [a-z]
+      int[] count = new int[number];
+      for(char i:s1.toCharArray()) {
+          count[i-'a']++;
+      }
+      
+      for(char i:s2.toCharArray()) {
+          count[i-'a']--;
+      }
+      
+      for(int n:count){
+          if (n != 0) return false;
+      }
+      return true;
+    }
+```
+
+
+
+**Follow-up**
 
 By [WikiPedia defination of Anagram](https://en.wikipedia.org/wiki/Anagram), two strings are anagrams in the following conditions:
 
@@ -269,6 +295,12 @@ public boolean checkIfTwoStringsAreAnagrams(String s1, String s2) {
 ```
 
 Note: If either of the string is null, then it returns false even both of them are null.
+
+*Related LeedCode Links*
+
+- [Valid Anagram](https://leetcode.com/problems/valid-anagram/description/)
+
+
 
 ### 5. Create a calculator that can perform the following features. (Total Score 4)
 

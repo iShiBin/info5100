@@ -14,24 +14,37 @@ public class Assignment3 {
         return str.toString();
     }
 
+    public boolean checkIfTwoStringsAreAnagramsWiki(String s1, String s2) {
+        if(s1 == null || s2 == null) return false;
+        if(getHashCode(s1) == getHashCode(s2)){return true;}
+        else return false; 
+    }
+    
     public boolean checkIfTwoStringsAreAnagrams(String s1, String s2) {
         if(s1 == null || s2 == null) return false;
-        final int number = 26;// alphabet range [a-z]
+      final int number = 128;// alphabet range [a-z]
+      int[] count = new int[number];
+      for(char i:s1.toCharArray()) {
+          count[i-'a']++;
+      }
+      
+      for(char i:s2.toCharArray()) {
+          count[i-'a']--;
+      }
+      
+      for(int n:count){
+          if (n != 0) return false;
+      }
+      return true;
+    }
+    
+    private int getHashCode(String str){
+        final int number = 128;
         int[] count = new int[number];
-        s1 = s1.toLowerCase();
-        for(char i:s1.toCharArray()) {
-            if(i>='a' && i<='z') count[i-'a']++;
+        for(char c:str.toCharArray()){
+            count[c]++;
         }
-        
-        s2 = s2.toLowerCase();
-        for(char i:s2.toCharArray()) {
-            if(i>='a' && i<='z') count[i-'a']--;
-        }
-        
-        for(int n:count){
-            if (n != 0) return false;
-        }
-        return true;
+        return Arrays.hashCode(count);
     }
 
     public static void main(String[] args) {
@@ -49,7 +62,7 @@ public class Assignment3 {
         s2 = "I am a weakish speller";
         System.out.println(test.checkIfTwoStringsAreAnagrams(s1, s2));
         
-        s1 = null; s2 = "Bin";
+        s1 = "eat"; s2 = "aTe";
         System.out.println(test.checkIfTwoStringsAreAnagrams(s1, s2));
         
         // Extra Credit (Score 2)

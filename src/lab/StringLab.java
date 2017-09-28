@@ -50,9 +50,6 @@ public class StringLab {
     
     String message = String.join("-", "Java", "is", "cool");
 //     message returned is: "Java-is-cool"
-    
-    
-    
   }
 
 }
