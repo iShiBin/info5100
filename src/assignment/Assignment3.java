@@ -1,3 +1,4 @@
+package assignment;
 import java.util.Arrays;
 
 public class Assignment3 {
