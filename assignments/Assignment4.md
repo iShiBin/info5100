@@ -86,6 +86,7 @@
 3. Every computer on the Internet has a unique identifying number, called an Internet protocol (IP) address. To contact a computer on the Internet, you send a message to the computer's' IP address. Here are some typical IP addresses:
 
   216.27.6.136  
+
   224.0.118.62
 
   There are different formats for displaying IP addresses, but the most common format is the dotted decimal format. The above two IP addresses use the dotted-decimal format. It is called "dotted" because dots are used to split up the big IP address number into four smaller numbers. It is called decimal because decimal numbers are used (as opposed to binary) for the four smaller numbers.
@@ -97,11 +98,13 @@
   You must implement all of the following:
 
   **Instance variables**:  
+
   dottedDecimal - a dotted-decimal string. Example value: "216.27.6.136"
 
   firstOctet, secondOctet, thirdOctet, fourthOctet  four int variables that store the octets for an IP address
 
-  **Constructor**:  
+  **Constructor**: 
+
   This constructor receives one parameter, a dotted-decimal string. You may assume that the parameter's' value is valid (i.e., no error checking required). The constructor initialises the instance variables with appropriate values. There are many ways to solve the problem of extracting octets from the given dotted-decimal string. We recommend that you use String methods to extract the individual octets as strings, and then use parseInt method calls to convert the octet strings to ints.
 
   **getDottedDecimal method**: This is a standard accessor method that simply returns the dottedDecimal instance variable's value.
