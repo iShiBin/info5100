@@ -113,36 +113,41 @@
 
   Provide a driver class that tests your IpAddress class. Your driver class should contain this main method: (Score 2)
 
-
   ```java
-
   public static void main(String args[]){
-  	IpAddress ip = new IpAddress("216.27.6.136");
-  	System.out.println(ip.getDottedDecimal());
-  	System.out.println(ip.getOctet(4));
-  	System.out.println(ip.getOctet(1));
-  	System.out.println(ip.getOctet(3));
-  	System.out.println(ip.getOctet(2));
-  }
-  	
+    	IpAddress ip = new IpAddress("216.27.6.136");
+    	System.out.println(ip.getDottedDecimal());
+    	System.out.println(ip.getOctet(4));
+    	System.out.println(ip.getOctet(1));
+    	System.out.println(ip.getOctet(3));
+    	System.out.println(ip.getOctet(2));
+    }
   ```
+
   Using the above main method, your program should generate the following output.
 
-  Sample output:  
+  Sample output: 
 
-  ```  
+  ```tex
   216.27.6.136
   136
   216
   6	 
-  27	
+  27
   ```
 
-4. Design a simple registration system that allows Student to register in a course using 2 classes: class Student & class Course. Implement the scenarios in class Test's main method.\
+  Design a simple registration system that allows Student to register in a course using 2 classes: class Student & class Course. Implement the scenarios in class Test's main method.\
 
-   Each student has a name and an id variables. Each object of class Student is initialised using values of name and id passed to constructor. Class Student has accessor methods for its instance variables
 
-   Each Course has a name, and a variable numberOfStudent representing the number of registered students. A course can have a maximum number of 10 students registered in it. Class Course store the registered students in students which is an array of type Student. When a student register in a course, he is added to the array. Each object of class Course is initialised using the title. Class Course has the following methods: method getStudents(): return the array of registered students; method boolean isFull():  return true if the course is full, accessor method for the title and numberOfStudent field, method registerStudent (Student student): if the course is not full, register a student in course. (Score 2)
+4. Each student has a name and an id variables. Each object of class Student is initialised using values of name and id passed to constructor. Class Student has accessor methods for its instance variables
+
+   Each Course has a name, and a variable numberOfStudent representing the number of registered students. A course can have a maximum number of 10 students registered in it. 
+
+   Class Course store the registered students in students which is an array of type Student. When a student register in a course, he is added to the array. 
+
+   Each object of class Course is initialised using the title.
+
+   Class Course has the following methods: method getStudents(): return the array of registered students; method boolean isFull():  return true if the course is full, accessor method for the title and numberOfStudent field, method registerStudent (Student student): if the course is not full, register a student in course. (Score 2)
 
 5. Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999. (Score 2)
 
@@ -182,3 +187,462 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
   
 }
 ```
+
+# Accomplishment
+
+Note: All the source code is included in ..\src\Assignment4.java, including some unit test cases.
+
+## 1. Format software license key
+
+### Algorithm
+
+The numbet of characters in the first group could be less than K, so the key to solve this problem is to scan this array from the back.
+
+1. If the char is not '-', then put it in the result, and count the current number of chars in the result.
+2. One the number of chars %K = 0, add a '-' and then continue to scan the array.
+3. When the pointer reaches index '0', quit the process.
+4. Reverse the result array and return it.
+
+### Solution
+
+```java
+public String splitLicenseKey(String key, int k){
+    StringBuffer splittedKey=new StringBuffer();
+    char[] chs = key.toCharArray();
+    int counter=0;
+    for(int i=chs.length-1;i>=0;i--){
+        if(chs[i]!='-'){
+            splittedKey.append(Character.toUpperCase(chs[i]));
+            counter++;
+        }
+        if(counter%k==0 && i!=0) splittedKey.append('-'); 
+    }
+    return splittedKey.reverse().toString();
+}
+```
+
+**Trick**: Step 2 may add an extra '-' when the number of chars in 'last' group reaches K, so we need to add an extra condition to avoid it.
+
+## 2. Rock Paper Scissors Game
+
+This assignment is to design some classes. So inheritance will be used a lot in this case. Here is the solution.
+
+```java
+class Tool{
+    private int strength;
+    protected char type;
+    
+    Tool(){}
+    Tool(int s){this.strength=s;}
+    
+    public void setStrength(int n){
+        this.strength=n;
+    }
+    
+    public int getStrength(){
+        return strength;
+    }    
+}
+
+class Scissors extends Tool{
+    Scissors(){}
+    Scissors(int s){
+        super.setStrength(s);
+        super.type='s';
+    }
+    
+    public boolean fight(Tool tool){
+        double factor=1.0;
+        if(tool.getClass()==Paper.class) factor*=2;
+        if(tool.getClass()==Rock.class) factor/=2;
+        
+        // put factor first to do a 'double' compare
+        return factor*this.getStrength() > tool.getStrength();
+    }
+}
+
+class Paper extends Tool{
+    Paper(){}
+    Paper(int s){
+        super.setStrength(s);
+        super.type='p';
+    }
+    
+    public boolean fight(Tool tool){
+        double factor=1.0;
+        if(tool.getClass()==Rock.class) factor*=2;
+        if(tool.getClass()==Scissors.class) factor/=2;
+        
+        // put factor first to do a 'double' compare
+        return factor*this.getStrength() > tool.getStrength();
+    }
+}
+
+class Rock extends Tool{
+    Rock(){}
+    Rock(int n){
+        super(n);
+        super.type='r';
+    }
+    
+    public boolean fight(Tool tool){
+        double factor=1.0;
+        if(tool.getClass()==Scissors.class) factor*=2;
+        if(tool.getClass()==Paper.class) factor/=2;
+        
+        // put factor first to do a 'double' compare
+        return factor*this.getStrength() > tool.getStrength();
+    }
+}
+
+class RockPaperScissorsGame {
+    public static void main(String args[]) {
+        Scissors s = new Scissors(5);
+        Paper p = new Paper(7);
+        Scissors r = new Scissors(15);
+
+        System.out.println(s.fight(p) + " , " + p.fight(s));
+        System.out.println(p.fight(r) + " , " + r.fight(p));
+        System.out.println(r.fight(s) + " , " + s.fight(r));
+    }
+}
+```
+
+The output after running the driver class is.
+
+>true , false
+>
+>false , true
+>
+>true , false
+
+## 3. IP
+
+The trick to solve this problem is to design a helper method `splitIP()` because the Java API like  `split()`are not allowed to use. This is my solution source code.
+
+```java
+class IpAddress{
+    private String dottedDecimal;
+    private int firstOctet, secondOctet, thirdOctet, fourthOctet;
+    
+    public void setDottedDecimal(String IP){
+        this.dottedDecimal=IP;
+    }
+    public String getDottedDecimal(){
+        return this.dottedDecimal;
+    }
+    
+    IpAddress(){};
+    IpAddress(String IP){
+        this.dottedDecimal=IP;
+        this.setOctets(this.splitIP());
+    }
+    
+    private void setOctets(int[] octets){
+        assert octets.length==4;
+        firstOctet=octets[0];
+        secondOctet=octets[1];
+        thirdOctet=octets[2];
+        fourthOctet=octets[3];
+    }
+    
+    // could be easy to use string's split function    
+    private int[] splitIP(){
+        final int N=4;
+        int ip[]=new int[N];
+        StringBuilder sb=new StringBuilder();
+        for(int i=0, j=0;i<N&&j<this.dottedDecimal.length();j++){
+            while(j<dottedDecimal.length() && dottedDecimal.charAt(j)!='.'){
+                sb.append(dottedDecimal.charAt(j));
+                j++;
+            }
+            ip[i++]=Integer.parseInt(sb.toString());
+            
+            sb=new StringBuilder();
+        }
+        return ip;
+    }
+    
+    public int getOctet(int p){
+        assert p<=1 && p<=4;
+        if(p==1) return firstOctet;
+        else if(p==2) return secondOctet;
+        else if(p==3) return thirdOctet;
+        else if(p==4) return fourthOctet;
+        else throw new IllegalArgumentException();
+    }
+}
+
+class IpAddressDriver{
+    public static void main(String args[]){
+        IpAddress ip = new IpAddress("216.27.6.136");
+        System.out.println(ip.getDottedDecimal());
+        System.out.println(ip.getOctet(4));
+        System.out.println(ip.getOctet(1));
+        System.out.println(ip.getOctet(3));
+        System.out.println(ip.getOctet(2));
+    }
+}
+```
+
+After running the driver, the result is the same with the description of this assignment.
+
+>216.27.6.136
+>
+>136
+>
+>216
+>
+>6
+>
+>27
+
+## 4. Students Register Classes
+
+Here is my solution.
+
+```java
+class Student{
+    private String name;
+    private int id;
+    
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+//    Student(){}
+    Student(String n, int i){
+        this.name=n;
+        this.id=i;
+    }
+    
+    public String toString(){
+        return id+", "+name;
+    }
+}
+
+class Course{
+    private String name;
+    private int numberOfStudent=0;
+    private final int maxOfStudent=10;
+    private Student[] students=new Student[maxOfStudent];
+    
+    public Course(String name) {
+        super();
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNumberOfStudent() {
+        return numberOfStudent;
+    }
+
+    public void setNumberOfStudent(int numberOfStudent) {
+        this.numberOfStudent = numberOfStudent;
+    }
+
+    public Student[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(Student[] students) {
+        this.students = students;
+    }
+    
+    public boolean isFull(){
+        return numberOfStudent==maxOfStudent;
+    }
+    
+    public void registerStudent(Student student){
+        if(!this.isFull()){
+            students[numberOfStudent++]=student;
+        }else{
+            System.out.println("Cannot register \""+student+"\" because the class is full.");
+        }
+    }    
+}
+// test class register system. I change the name from 'Test' to 'CourseRegisterDrive'
+class CourseRegisterDrive {
+    public static void main(String[] args) {
+        String[] names={"Bin","Tianyu","Yuhan","Lulu","Zihan","Aarabhi","Lulu","Yujia","Chun","Liuhui","Xiaoxiao"};
+        int[] ids = {1822, 1823, 1824, 1825, 1826, 1827, 1828, 1829, 1830, 1831, 1832};
+
+        Student[] stu5100 = new Student[names.length];
+
+        for (int i = 0; i < names.length && i < ids.length; i++) {
+            stu5100[i] = new Student(names[i], ids[i]);
+        }
+
+        Course info5100 = new Course("Application Engineering and Development");
+        for (Student s : stu5100) {
+            if (s != null)
+                info5100.registerStudent(s);
+        }
+
+        Student[] registeredStudent = info5100.getStudents();
+        System.out.println("Here is the registered studetns for course: " + info5100.getName());
+        for (Student s : registeredStudent) {
+            System.out.println(s);
+        }
+        System.out.println("The total registerred student number is: " + info5100.getNumberOfStudent());
+    }
+}
+```
+
+After running the driver class, here is the output.
+
+>Cannot register "1832, Xiaoxiao" because the class is full.
+>
+>Here is the registered studetns for course: Application Engineering and Development
+>
+>1822, Bin
+>
+>1823, Tianyu
+>
+>1824, Yuhan
+>
+>1825, Lulu
+>
+>1826, Zihan
+>
+>1827, Aarabhi
+>
+>1828, Lulu
+>
+>1829, Yujia
+>
+>1830, Chun
+>
+>1831, Liuhui
+>
+>The total registerred student number is: 10
+
+## 5. Roman Numerals
+
+### Algorithm
+
+[Roman numerals](https://en.wikipedia.org/wiki/Roman_numerals) are "Numbers in this system are represented by combinations of letters from the Latin alphabet. Roman numerals, as used today, are based on seven symbols." by its definition in WikiPedia.
+
+| Symbol | [I](https://en.wikipedia.org/wiki/I) | [V](https://en.wikipedia.org/wiki/V) | [X](https://en.wikipedia.org/wiki/X) | [L](https://en.wikipedia.org/wiki/L) | [C](https://en.wikipedia.org/wiki/C) | [D](https://en.wikipedia.org/wiki/D) | [M](https://en.wikipedia.org/wiki/M) |
+| ------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| Value  | 1                                    | 5                                    | 10                                   | 50                                   | 100                                  | 500                                  | 1,000                                |
+
+And also from WikiPedia:
+
+> Numbers are formed by combining symbols and adding the values, so II is two (two ones) and VIII is eight (a five and three ones). Symbols are placed from left to right in order of value, starting with the largest. Because each numeral has a fixed value rather than representing multiples of ten, one hundred and so on, according to *position*, there is no need for "place keeping" zeros, as in numbers like 207 or 1066; those numbers are written as CCVII (two hundreds, a five and two ones) and MLXVI (a thousand, a fifty, a ten, a five and a one).
+
+> In a few specific cases,[[2\]](https://en.wikipedia.org/wiki/Roman_numerals#cite_note-2) to avoid confusing and hard to read numbers with four characters repeated in succession (such as IIII or XXXX), [subtractive notation](https://en.wikipedia.org/wiki/Subtractive_notation) is used: as in this table:
+
+| Number   | 4    | 9    | 40   | 90   | 400  | 900  |
+| -------- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Notation | IV   | IX   | XL   | XC   | CD   | CM   |
+
+
+
+- > I placed before V or X indicates one less, so four is IV (one less than five) and nine is IX (one less than ten)
+
+- > X placed before L or C indicates ten less, so forty is XL (ten less than fifty) and ninety is XC (ten less than a hundred)
+
+- > C placed before D or M indicates a hundred less, so four hundred is CD (a hundred less than five hundred) and nine hundred is CM (a hundred less than a thousand)[[5\]](https://en.wikipedia.org/wiki/Roman_numerals#cite_note-sun-5)
+
+So we can use greedy strategy to convert an integer to a roman numeral with the help of two arrays.
+
+```java
+int[] values = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+String[] symbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+```
+
+Here is the logical steps to achieve the transform of integer num.
+
+1. Start from the left of the help array values (say index i=0), set k=num/values[i].
+2. If k>0, append symbols[i] to the result string `roman`, and deduce values[i] from the orginal num.
+3. Set i=i+1 and continue this calculation until num=0
+4. At last, `roman` is the desired roman numerical so return it as a string.
+
+### Solution
+
+```java
+public String intToRoman(int num) {
+    final int[] values = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+    final String[] symbols = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+  
+    StringBuffer roman = new StringBuffer();
+    int i = 0;
+    while(num>0){
+        int k = num / values[i];
+        while(k-->0){
+            roman.append(symbols[i]);
+            num -= values[i];
+        }
+        i++;
+    }
+    return roman.toString();
+}
+```
+
+## Extra Points: Median in two sorted array
+
+## Approach I: Use Arrays.sort()
+
+As a start, I will take a dummy solution of using Java's Arrays.sort() API, which has s time complexity of $O((m+n)*log(m+n))$, and a space complexity of $O(m+n)$ because it uses an extra nums[] array to hold all the elments in these two input arrays.
+
+```java
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int[] nums=Arrays.copyOf(nums1, nums1.length+nums2.length);
+        for(int i=nums1.length;i<nums.length;i++){
+            nums[i]=nums2[i-nums1.length];
+        }
+        
+        Arrays.sort(nums);
+        System.out.println(Arrays.toString(nums));
+        
+        int n=nums.length;
+        return 1.0*(nums[n/2]+nums[(n-1)/2])/2;
+    }
+}
+```
+
+### Approach II: Use merge sort idea
+
+We can use merge sort strategy taking advantage of  the input arrays are both sorted. Here is the solution. 
+
+```java
+public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+    int[] nums=new int[nums1.length+nums2.length];
+    int i=0,j=0;
+    while(i<nums1.length && j<nums2.length) {
+        if(nums1[i]>nums2[j]) nums[i+j]=nums2[j++];
+        else nums[i+j]=nums1[i++];
+    }
+    while(i<nums1.length) nums[i+j]=nums1[i++];
+    while(j<nums2.length) nums[i+j]=nums2[j++];
+  
+    int n=nums.length;
+    return 1.0*(nums[n/2]+nums[(n-1)/2])/2;
+}
+```
+
+**Complexity**:
+
+*Time*: O(m+n). Merge the sorted array could take as much as O(m+n) time.
+
+*Space*: O(m+n). An extra help array nums contains (m+n) numbers. 
+
+**Improvements**: This solution could be improved to only use half of the space and time by just storing the first half (+1 when the total length is even) of all the elements. However, the complexity does not reduce in this case. So I won't bother to provide the code.
