@@ -1,6 +1,6 @@
-#Assignment 4
+# Assignment 4
 
-##Instructions
+## Instructions
 
 * Max score is 10.
 * Deadline is 11:59PM, Oct 7th , Saturday.
@@ -10,7 +10,7 @@
 * Don't use any direct methods for this assignment.
 * Contact us if any assistance is needed.
 
-##Questions
+## Questions
 
 1. Now you are given a string S, which represents a software license key which we would like to format. The string is composed of alphanumerical characters and dashes. The dashes split the alphanumerical characters within the string into groups.(i.e If they are M dashes, the string is split into M+1 groups). The dashes in the given string are possibly misplaced. 
 
