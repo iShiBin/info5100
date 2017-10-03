@@ -11,10 +11,8 @@ Here is the tree of this repository.
 ```
 ├── LICENSE
 ├── README.md
-├── assignments: actual assigments
-├── build: build output .class files
+├── assignments: actual assignments
 ├── notes: class notes
-├── ref: referece files
-└── src: Java source code file
+├── head-first2: the referenced book
+└── src: source code packages and files
 ```
-
