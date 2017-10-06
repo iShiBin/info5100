@@ -99,12 +99,16 @@ Each question carries 2 points.
 
 # Accomplishments
 
+score  9 + extra credit 3.5; Total Score = 10
+
 # 1. Calculate Employee Salary
 
 Write a java function to calculate the salary of an employee based on the following rules.  
 
 i. function takes input of number of hours an employee worked and returns the salary.  
-ii.  The first 36 hours worked are paid at a rate of 15.0, then the next 5 hours are paid at a rate of 15 * 1.5. Hours after that up to a max of 48 are paid at a rate of 15 * 2.
+ii.  The first 36 hours worked are paid at a rate of 15.0, then the next 5 hours are paid at a rate of 15 * 1.5. Hours after that up to a max of 48 are paid at a rate of 15 * 2.  
+
+score 2
 
 ## Analysis
 
@@ -146,6 +150,8 @@ Write a java function that adds all the digits of an integer until it is single 
 i. function takes an integer as input and returns its sum of digits.  
 ii. for example input = 37, sum = 3+7 = 10, sum = 1+0 = 1. result = 1.
 
+score 1
+
 ## Analysis
 
 Use  `%10` to get the least significant in an integer, and then set the integer to `/10`. Repeat this process until integer is 0.
@@ -157,7 +163,7 @@ However, the number `input` could be a negetive integer. In such case, we need t
 ## Solution
 
 ```java
-  public int addDigits(int input) {
+  public int addDigits(int input) {   // for input = 37, expected output = 1, your output 10
     if (input < 0) input = -input;
     int sum = 0;
     while (input != 0) {
@@ -165,7 +171,7 @@ However, the number `input` could be a negetive integer. In such case, we need t
       sum += input % 10;
       input /= 10;
     }
-    return sum;
+    return sum; // return sum<10 ? sum : addDigits(sum);
   }
 ```
 
@@ -176,6 +182,8 @@ Write a java function to print all perfect number between 1 and n.
 i. Perfect number is a positive integer which is equal to the sum of its proper positive divisors *except itself*.
 ii.  
 For example: 6 is the first perfect number, Proper divisors of 6 are 1, 2, 3. Sum of its proper divisors (*except itself*) = 1 + 2 + 3 = 6.  
+
+score 2
 
 ## Analysis
 
@@ -190,7 +198,8 @@ public void printPerfectNumbers(int n){
       System.out.println(m);
     }
   }
-
+                               // I think you have misplaced '}'. It looks like a new method is defined inside of a method
+                               
 private boolean isPerfectNumber(int num) {
   if (num == 0) return false;
   int sum = 0;
@@ -209,6 +218,8 @@ Write a java class called pizza with (Add detail as needed):
 
 i. At least 3 attributes :pizza type , unit price and loyalty points. More attributes are welcome to have.  
 ii. Constructor is needed. Extra-credit for 0.5 point if you write more than 1 right constructor for this class
+
+score 2 + extra credit 0.5
 
 ## Analysis
 
@@ -242,6 +253,7 @@ i. Attributes needed: customer name and what pizzas customer has ordered.
 ii. Think about what kind of data structure will be used to record the pizza name and numbers for each kind of pizza.( Give me your thought, Extra credit for 1 point)  
 iii. In main method , sum up how many the customer spend.
 
+score 2+ extra credit 1
 ## Analysis
 
 The attributes for this **Customer** class are: name, gender, age and the pizzas he/she orders.  
@@ -324,6 +336,8 @@ Write a Java program that generates an isosceles right angled triangle made of a
 The first line only has one asterisk.
 
 All the other lines except the last line have two asterisks, one of which is in the start of the line and the other is in the end.
+
+extra credit 2. The heap runs out of memory if we use very large integers.
 
 The last line has as many asterisks as the line number itself.
 
