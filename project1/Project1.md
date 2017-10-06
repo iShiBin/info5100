@@ -56,3 +56,101 @@ displayWord()- **display the correctly guessed letters and hide the remaining wi
 
 # Accomplishment
 
+Most of the design follows the requirements above, I will not go into very detail since the source code can explain itself. Here is some extra functions.
+
+## Overload the Constructor of Class Hangman
+
+A default constructor 'Hangman()' is provied to read from an English dictionary file and choose a random eligible word from the word in this file.
+
+```java
+Hangman(){
+  try {
+    String dictionary = new String(Files.readAllBytes(Paths.get(dictionaryFile)));
+    this.chooseWord(Arrays.asList(dictionary.split("\r\n")));//bug fixed - add \r
+  } catch (IOException e) {
+    System.out.println("Cannot read dictionary file:" +dictionaryFile);
+    System.out.println("But you can run this case with some Engish words(seperated by a space).");
+    e.printStackTrace();
+  }
+}
+```
+
+## Random Choose a Word from the Input
+
+This chooseWord(List<String>) function will choose a random word with length <= MAX_Guess from it's input. Here is the source code.
+
+```java
+private void chooseWord(List<String> words){
+  // to remove the word with length > MAX_GUESS
+  List<String> qualified = words.stream().filter(word->word.length()<=MAX_GUESS).collect(Collectors.toList());
+  
+  int index=new Random().nextInt(qualified.size());
+  word=qualified.get(index);
+  
+  guess=new char[word.length()];
+  Arrays.fill(guess, MASK);
+}
+```
+
+## Take Parameters in the Main() Function for More Fun
+
+Guessing a random word in the dictionary is hard. So I make it easy by read some customized words when running the application.
+
+```java
+public static void main(String[] args){
+  if(args==null || args.length==0) new Hangman().playGame(); // use default dictionary file
+  else new Hangman(Arrays.asList(args)).playGame(); // use customized words list
+}
+```
+
+## Test and Verification
+
+Here is the output when the guessing is wrong.
+
+```
+The mystious word is: --------
+The letters you guessed: [x, x, x, x, x, x, x, x]
+You have 0 more wrong guesses left.
+____________
+|          |
+|          O
+|          |
+|       --- ---
+|         / \
+|        /   \
+|      --     -- 
+|           
+-----------------
+****GAVE OVER****
+```
+
+And you will see this when you win the game:
+
+```
+The mystious word is: guess
+The letters you guessed: [s, g, u, e]
+You have 8 more wrong guesses left.
+____________
+|          |
+|           
+|           
+|           
+|           
+|           
+|           
+|           
+-----------------
+Congratulate! You WIN!
+```
+
+Note: The command to run in the console is `java Hangman guess` in the .class folder.
+
+**How to Use/Run by Yourself:**
+
+To run the class, go to to the root of 'project1', and type `java Hangman`if you need challenge yourself using the dictionary (JRE is required to run `java`), or you can just type `java Hangman guess the word in my mind` if you want to make it easy and play with someone.
+
+## Source Code and Delivery
+
+The source code is 'Hangman.java' which is in the project1 directory.
+
+And the delievery is 'Hangman.class' in the same folder with the java file.

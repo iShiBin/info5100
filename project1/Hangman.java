@@ -138,14 +138,14 @@ public class Hangman {
   }
   
   private void gameOver(){
-    System.out.println("The mysterious word is:"+this.word);
+//    System.out.println("The mysterious word is:"+this.word);
     System.out.println("****GAVE OVER****");
     System.exit(0);
   }
   
   public static void main(String[] args){
-    System.out.println("Hi");
     if(args==null || args.length==0) new Hangman().playGame(); // use default dictionary file
-    else new Hangman(Arrays.asList(args)).playGame();; // use customized words list
+    else new Hangman(Arrays.asList(args)).playGame(); // use customized words list
   }
 }
+
