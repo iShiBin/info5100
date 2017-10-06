@@ -1,6 +1,7 @@
+import java.util.*;
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.*;
 
 public class Hangman {
   private String word;
@@ -17,7 +18,7 @@ public class Hangman {
   Hangman(){
     try {
       String dictionary = new String(Files.readAllBytes(Paths.get(dictionaryFile)));
-      this.chooseWord(Arrays.asList(dictionary.split("\n")));
+      this.chooseWord(Arrays.asList(dictionary.split("\r\n")));//bug fixed - add \r
     } catch (IOException e) {
       System.out.println("Cannot read dictionary file:" +dictionaryFile);
       System.out.println("But you can run this case with some Engish words(seperated by a space).");
@@ -30,14 +31,17 @@ public class Hangman {
   }
   
   private void chooseWord(List<String> words){
-    int index=new Random().nextInt(words.size());
-    word=words.get(index);
+    // to remove the word with length > MAX_GUESS
+    List<String> qualified = words.stream().filter(word->word.length()<=MAX_GUESS).collect(Collectors.toList());
+    
+    int index=new Random().nextInt(qualified.size());
+    word=qualified.get(index);
     
     guess=new char[word.length()];
     Arrays.fill(guess, MASK);
   }
   
-  public void handleGuess(char c){
+  private void handleGuess(char c){
     if(word.contains(String.valueOf(c))){
       for(int i=0;i<word.length();i++){
         if(word.charAt(i)==c) guess[i]=c;
@@ -110,7 +114,7 @@ public class Hangman {
     }
   }
   
-  public void playGame(){
+  private void playGame(){
     System.out.print("\033[H\033[2J");
     System.out.flush();
     System.out.println("Welcome! Here is the secret word:"+String.valueOf(this.guess));
@@ -123,11 +127,9 @@ public class Hangman {
       if(this.gameWon()){
         System.out.println("Congratulate! You WIN!");
         scanner.close();
-        this.gameOver();
+        System.exit(0);
       }
     }while(this.wrongGuess<Hangman.MAX_GUESS);
-    
-    System.out.println("****GAVE OVER****");
     this.gameOver();
   }
   
@@ -136,6 +138,8 @@ public class Hangman {
   }
   
   private void gameOver(){
+    System.out.println("The mysterious word is:"+this.word);
+    System.out.println("****GAVE OVER****");
     System.exit(0);
   }
   
