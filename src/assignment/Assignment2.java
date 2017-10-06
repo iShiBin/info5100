@@ -1,3 +1,4 @@
+package assignment;
 public class Assignment2 {
 
 	// 1. Calculate Employee Salary

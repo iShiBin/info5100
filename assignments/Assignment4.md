@@ -188,7 +188,7 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 }
 ```
 
-# Accomplishment
+# Accomplishments
 
 Note: All the source code is included in ..\src\Assignment4.java, including some unit test cases.
 
