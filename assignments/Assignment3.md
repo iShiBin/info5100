@@ -94,6 +94,7 @@ class Clock {
    and return a solution as array.
 
 ---
+**Score 10 + extra credit 2**
 
 # Achievements
 
@@ -130,7 +131,7 @@ public class Book {
 }
 ```
 
-So, here is a correct version. (I add a constructor without any parameter following the best practice.)
+So, here is a correct version. (I add a constructor without any parameter following the best practice.) (result 1)
 
 ```java
 public class Book {
@@ -182,7 +183,7 @@ class Clock {
 }
 ```
 
-So, the right version is as below.
+So, the right version is as below. (result 1)
 
 ```java
 class Clock {
@@ -205,7 +206,7 @@ class Clock {
 i. The function should take a string as input.
 ii. Should return the input string after omitting the vowels.
 
-Here is the solution.
+Here is the solution. (result 2)
 
 ```java
 public String removeVowelsFromString(String input) {
@@ -230,7 +231,7 @@ ii. Should return a boolean ‘true’ if the inputs are Anagrams else return �
 
 **Algorithm**
 
-As required in the assignment notes - the characters in the string is case senstive and all the space and punctuation counts. Count up the each char's occurance in s1 and then count down it in s2. If all the number is anagram, then every number in the count should be 0. Otherwise, they are not anagrams.
+As required in the assignment notes - the characters in the string is case senstive and all the space and punctuation counts. Count up the each char's occurance in s1 and then count down it in s2. If all the number is anagram, then every number in the count should be 0. Otherwise, they are not anagrams. (result 2)
 
 ```java
     public boolean checkIfTwoStringsAreAnagrams(String s1, String s2) {
@@ -317,7 +318,7 @@ ii. For example, if quadratic equation is $Ax^2 + Bx + C$. The function should t
 
 #### Algorithm
 
-Since this calculator class is just to calculate, so static functions will be suitable.
+Since this calculator class is just to calculate, so static functions will be suitable.(result 4 + 2)
 
 ```java
 class Calculator {
