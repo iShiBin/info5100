@@ -1,4 +1,4 @@
-package assignment;
+
 public class Book {
     int size;
     int price;
