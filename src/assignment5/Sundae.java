@@ -1,7 +1,7 @@
 package assignment5;
 
 class Sundae extends IceCream {
-  private String sundae;
+  private String sundaeName;
   private int topping;
   
   @Override
@@ -13,12 +13,13 @@ class Sundae extends IceCream {
   
   Sundae(String icecream, int cost, String sundae, int topCost){
     super(icecream, cost);
-    this.sundae=sundae;
+    this.sundaeName=sundae;
     this.topping=topCost;
   }
   
+  @Override
   public String toString(){
-    return sundae+" Sundae with\n" + super.toString();
+    return sundaeName+" Sundae with\n" + super.toString();
   }
 
 }

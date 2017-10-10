@@ -160,3 +160,12 @@ public List<Integer> spiralOrder(int[][] matrix) {
          //write your code here
 }
 ```
+
+---
+
+# Achievements
+
+## Assignment 5
+
+I've included some comments in the souce code and generate the javadoc files. Please go to the /doc/assignment5 folder and check it out.
+
