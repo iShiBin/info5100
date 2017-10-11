@@ -84,7 +84,6 @@ public class TestCheckOut {
         System.out.println(checkout);
     }
 }
-
 ```
 
 ### Output
@@ -141,8 +140,10 @@ Candy Corn			3.27
 Tax				 .77
 Total Cost		       12.69
 
-
 ```
+
+
+
 
 ## Extra Credit
 
@@ -153,7 +154,8 @@ Given a matrix of m x n elements (m rows, n columns), return all elements of the
 	{{1,2,3},
 	 {4,5,6},
 	 {7,8,9}}
-    You should return {1,2,3,6,9,8,7,4,5}.
+You should return {1,2,3,6,9,8,7,4,5}.
+
 
 ```java
 public List<Integer> spiralOrder(int[][] matrix) {
@@ -167,5 +169,202 @@ public List<Integer> spiralOrder(int[][] matrix) {
 
 ## Assignment 5
 
-I've included some comments in the souce code and generate the javadoc files. Please go to the /doc/assignment5 folder and check it out.
 
+
+I've included some comments in the souce code and generate the javadoc files. Please go to the **/doc/assignment5** folder and check it out.
+
+**Java Source Code Directory:** /src/assignmnent5/
+
+## Extra Credit
+
+### Approach I: Recursion
+
+#### Algorithm
+
+In tution, this problem could be resovled using recursion. First to deal with the outmost layer of this matrix from number with index (0,0) to (m-1,n-1), and then solve the sub-problem of the inner layers from (1,1) and (m-1,n-2), and so on.
+
+Finding the out most layer in a matrix is easy, just go though this layer clock-wise and copy top row, right column, bottom row and left column at last. (The overlap elment in the corner should be only counted once, I will just include it when copying rows.)
+
+However, the base cases are complex because in the end, the last case could be one element, one row or oen column.  Defining L((r1,c1), (r2,c2)) as the spiral order of elements in the out most layer of matrix from point (r1,c1) to (r2, c2), the base case are one of the followings:
+
+- Exit if r1<r2 or c1>c2. Because point (r1, c1) should be always in front (up and left side) of point (r2, c2), otherwise, it means all the elments have already been visited.
+
+- Only one row left, then copy this row.
+
+- Only one colum left then copy this column.
+
+  Note: Only one number left case is included in the 'only one row left', because very case starts from the top row.
+
+#### Implenmentation
+
+The Java source code is as below, you can also refer to the source code file in \src\assignment5\SpiralMatrix.java
+
+```java
+package assignment5;
+
+import java.util.*;
+
+public class SpiralMatrix {
+  private List<Integer> list = new ArrayList<Integer>();
+
+  public List<Integer> spiralOrder(int[][] matrix) {
+    if (matrix == null)
+      return null;
+    if (matrix.length < 1)
+      return new ArrayList<>();
+
+    spiralOrder(matrix, 0, 0, matrix.length - 1, matrix[0].length - 1);
+    return list;
+  }
+
+  private void spiralOrder(int[][] matrix, int r1, int c1, int r2, int c2) {
+    if (r1 > r2 || c1 > c2)
+      return;
+    else if (r1 == r2) {
+      list.addAll(copyRow(matrix, r1, c1, c2));
+      return;
+    } else if (c1 == c2) {
+      list.addAll(copyColumn(matrix, c2, r1, r2));
+      return;
+    } else {
+
+      list.addAll(copyRow(matrix, r1, c1, c2));
+      if (r1 + 1 <= r2 - 1)
+        list.addAll(copyColumn(matrix, c2, r1 + 1, r2 - 1));
+      list.addAll(copyRow(matrix, r2, c2, c1));
+      if (r2 - 1 >= r1 + 1)
+        list.addAll(copyColumn(matrix, c1, r2 - 1, r1 + 1));
+
+      spiralOrder(matrix, r1 + 1, c1 + 1, r2 - 1, c2 - 1);
+    }
+  }
+
+  // start and end are the column index
+  private List<Integer> copyRow(int[][] matrix, int row, int start, int end) {
+    List<Integer> l = new ArrayList<>();
+    if (start <= end) {
+      for (int j = start; j <= end; j++)
+        l.add(matrix[row][j]);
+    } else {
+      l = copyRow(matrix, row, end, start);
+      Collections.reverse(l);
+    }
+    // System.out.println("Row Copied"+l);
+    return l;
+  }
+
+  // start and end are the row index
+  private List<Integer> copyColumn(int[][] matrix, int col, int start, int end) {
+    List<Integer> l = new ArrayList<>();
+    if (start <= end) {
+      for (int i = start; i <= end; i++) {
+        l.add(matrix[i][col]);
+      }
+    } else {
+      l = copyColumn(matrix, col, end, start);
+      Collections.reverse(l);
+    }
+    // System.out.println("Col Copied"+l);
+    return l;
+  }
+}
+```
+
+#### Test
+
+Here is the test code with output inline as comments.
+
+```java
+  public static void main(String[] args) {
+    int[][] matrix = { { 1 } };
+    System.out.println(new SpiralMatrix().spiralOrder(matrix));
+    // [1]
+
+    matrix = new int[][] { { 1, 2 } };
+    System.out.println(new SpiralMatrix().spiralOrder(matrix));
+    // [1, 2]
+
+    matrix = new int[][] { { 1 }, { 2 } };
+    System.out.println(new SpiralMatrix().spiralOrder(matrix));
+    // [1, 2]
+
+    matrix = new int[][] { { 1, 2 }, { 3, 4 } };
+    System.out.println(new SpiralMatrix().spiralOrder(matrix));
+    // [1, 2, 4, 3]
+
+    matrix = new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+    System.out.println(new SpiralMatrix().spiralOrder(matrix));
+    // [1, 2, 3, 6, 9, 8, 7, 4, 5]
+
+    matrix = new int[][] {{1,2,3,10}, {4,5,6,11}, {7,8,9,12}, {14,15,16,17}};
+    System.out.println(new SpiralMatrix().spiralOrder(matrix));
+    // [1, 2, 3, 10, 11, 12, 17, 16, 15, 14, 7, 4, 5, 6, 9, 8]
+  }
+```
+
+#### Complexity
+
+**Time:** O(m*n). In order to get such list, we need to visit every element in this matrix, this is the best time complexity in reality.
+
+**Space:** O(m*n). The returned output list contains this many elements. 
+
+### Approach II: Iteration
+
+#### Algorithm
+
+The above solution could be modified using iteration as below. Basically, it visit every element in this matrix in top row, right column, bottom row, and left column by using row and col position.
+
+#### Implementation
+
+```java
+  public List<Integer> spiralOrderII(int[][] matrix) {
+    if (matrix.length == 0)
+      return new ArrayList<>();
+
+    int m = matrix.length, n = matrix[0].length;
+    List<Integer> list = new ArrayList<>(m * n);
+
+    int row = 0, col = -1;
+    while (true) {
+      for (int i = 0; i < n; i++) {
+        list.add(matrix[row][++col]);
+      }
+
+      if (--m == 0)
+        break;
+      for (int i = 0; i < m; i++) {
+        list.add(matrix[++row][col]);
+      }
+
+      if (--n == 0)
+        break;
+      for (int i = 0; i < n; i++) {
+        list.add(matrix[row][--col]);
+      }
+
+      if (--m == 0)
+        break;
+      for (int i = 0; i < m; i++) {
+        list.add(matrix[--row][col]);
+      }
+
+      if (--n == 0)
+        break;
+    }
+    return list;
+  }
+```
+
+#### Complexity
+
+**Time:** O(m*n)
+
+**Space:** O(m*n)
+
+### Source Code
+
+/src/assignmnent5/SpiralMatrix.java
+
+### References
+
+[Spiral Matrix](https://leetcode.com/problems/spiral-matrix/description/)
