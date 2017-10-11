@@ -28,7 +28,10 @@
 2. Individual work, not team project. But can have discuss with other classmates.
 
 ---
-
+/*
+GOOD WORK
+SCORE: 10
+*/
 # Accomplishment
 
 ## 1. Hiking

@@ -9,10 +9,11 @@ This class was designed to meet the needs of engineering students with a limited
 Here is the tree of this repository.
 
 ```
-├── LICENSE
+.
 ├── README.md
-├── assignments: actual assignments
-├── notes: class notes
-├── head-first2: the referenced book
-└── src: source code packages and files
+├── assignments: actual work of assignments in markdown format.
+├── head-first2
+├── notes: some class notes
+├── project*: project like project1, project2... 
+└── src: java source code
 ```
