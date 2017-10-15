@@ -2,14 +2,22 @@
 public class Test {
 
   public static void main(String[] args) {
-    int cent=199;
-    System.out.println(String.format("%.2f",1.0*199/100));
+    int i=10;
+    Integer x=10;
+    pass(i);
+    System.out.println(i);
     
-    int width=50;
-    String s="M & M DessertShoppe";
-    System.out.println("Strawberry Ice Cream 1.45".length());
-    int pad=(width-s.length())/2;
-    System.out.println(String.format("%"+(s.length()+pad)+"s",s));
+    
+  }
+  
+  static int pass(Integer integer){
+    integer=1+integer;
+    return integer;
+  }
+  
+  static int pass(int i){
+    i=i+1;
+    return i;
   }
 
 }
