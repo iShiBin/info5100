@@ -160,19 +160,30 @@ class ATM {
     this.phoneToAccount=new HashMap<>();
   }
   
-  public void init(){
-    System.out.print("Welcome! Are you a new user? (1:Yes/0:No)");
-    int n=Integer.valueOf(scanner.nextLine().trim());
-    if(n==1){
-      ATMUser user=this.register();
-      this.run(user);
-    }else if(n==0){
-      System.out.print("\nPress 1 to login, 0 to reset your password.");
-      if(Integer.valueOf(scanner.nextLine().trim())==1) this.login();
-      else this.promptPasswordReset();
-    }else{
-      System.out.println("\nInvalid input. Please try again.");
-      this.init();
+  public void init (){
+    System.out.print("Welcome! Are you a new user? (1:Yes/0:No and log me in./9:No, but I forget my password.)");
+    try {
+      String item=scanner.nextLine();
+      if(item.equals("1")){
+        ATMUser user=this.register();
+        this.run(user);
+      }else if(item.equals("0")){
+        this.login();
+      }else if(item.equals("9")){
+        this.promptPasswordReset();
+      }else if(item.equals("*")){
+        this.exit();
+      }
+      else{
+        System.out.println("\nInvalid input. Please try again, and enter * to exit");
+        this.init();
+      }
+    } catch (NoSuchElementException ne) {
+      System.out.println("no line was found");
+      ne.printStackTrace();
+    } catch (IllegalStateException ie){
+      System.out.println("this scanner is closed");
+      ie.printStackTrace();
     }
   }
   
@@ -185,8 +196,8 @@ class ATM {
     if (this.customers.containsKey(account)) {
       System.out.print("\nThis account seems already registerred.");
       System.out.print("\nPress 1 to continue to login, and 0 to try register again:");
-      int choice = Integer.valueOf(scanner.nextLine());
-      if (choice == 1)
+      String item = scanner.nextLine();
+      if (item.equals("1"))
         this.login();
       else
         this.register();
@@ -200,7 +211,7 @@ class ATM {
 
       System.out.print("\nWhat is your phone number?");
       String phone = "";
-      while (phone!=null && !phone.equals("0")) { // 0 to exit
+      while (phone != null && !phone.equals("0")) { // 0 to exit
         phone = scanner.nextLine().trim();
         if (this.phoneToAccount.containsKey(phone))
           System.out.println("Verify your phone number or try another one because it has been used.");
@@ -221,7 +232,7 @@ class ATM {
       String address = scanner.nextLine();
       if (address != null && !address.isEmpty()) {
         user.setAddress(address);
-      }else{
+      } else {
         System.out.println("\nInfo: No address information is recorded.");
       }
     }
@@ -250,14 +261,14 @@ class ATM {
     this.login(ATM.MAX_TRY_TIMES,"");
   }
   
-  boolean promptPasswordReset(){
+  boolean promptPasswordReset() throws NumberFormatException {
     System.out.print("\nTo reset your password, please enter your name, year of birth, and phone number:");
-    String name=scanner.next().trim();
-    int yearOfBirth=scanner.nextInt();
-    String phone=scanner.next().trim();
+    String name=scanner.nextLine().trim();
+    int yearOfBirth=Integer.valueOf(scanner.nextLine().trim());
+    String phone=scanner.nextLine().trim();
     if(this.validate(name, yearOfBirth, phone)){
       System.out.print("\nYou are a registered user. Please enter your new password:");
-      String password=scanner.next();
+      String password=scanner.nextLine();
       return this.resetPassword(name, yearOfBirth, phone, password);
     }else{
       System.out.print("\nYour phone number does not exist in our system. Try again!");
@@ -266,7 +277,6 @@ class ATM {
     }
   }
   
-
   boolean resetPassword(String name, int birthYear, String phone, String newPassword){
     if(this.validate(name, birthYear, phone)){
       return this.changePassword(this.customers.get(this.phoneToAccount.get(phone)), newPassword);
@@ -417,11 +427,12 @@ class ATM {
   void recentTransactions(ATMUser user){
     List<String> list=transactions.get(user.getBankAccountNumber());
     if(list!=null) {
-      System.out.println("The recent "+ATM.RECENT_TRANS_NUM+" transactions are:");
+      System.out.println("\nThe recent "+ATM.RECENT_TRANS_NUM+" transactions are:");
       int end=list.size()-1;
       for(int i=end;i>=Math.max(end-10, 0);i--){
         System.out.println(list.get(i));
       }
+      System.out.println("**End of rencent transactions**\n");
     }else{
       System.out.println("No transactoins.");
     }
