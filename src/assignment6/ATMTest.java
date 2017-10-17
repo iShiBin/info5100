@@ -103,5 +103,9 @@ public class ATMTest {
     Assert.assertTrue("new balance should equal (old balance-withdrawal)",expected==actual);
   }
  
-  
+//  simulate in the console and check for exceptions
+  @Test
+  public void simulate(){
+    atm.init();
+  }
 }

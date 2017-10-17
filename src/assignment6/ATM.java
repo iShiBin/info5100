@@ -2,6 +2,8 @@ package assignment6;
 
 import java.util.*;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 class User{
   private String name, address, phoneNumber, bankAccountNumber;
   private int birthYear;
@@ -159,70 +161,83 @@ class ATM {
   }
   
   public void init(){
-    System.out.println("Welcome! Are you a new user? (1:Yes/0:No)");
-    int n=scanner.nextInt();
+    System.out.print("Welcome! Are you a new user? (1:Yes/0:No)");
+    int n=Integer.valueOf(scanner.nextLine().trim());
     if(n==1){
       ATMUser user=this.register();
       this.run(user);
     }else if(n==0){
-      System.out.println("Press 1 to login, 0 to reset your password.");
-      if(scanner.nextInt()==1) this.login();
+      System.out.print("\nPress 1 to login, 0 to reset your password.");
+      if(Integer.valueOf(scanner.nextLine().trim())==1) this.login();
       else this.promptPasswordReset();
     }else{
-      System.out.println("Invalid input. Please try again.");
+      System.out.println("\nInvalid input. Please try again.");
       this.init();
     }
   }
   
-  ATMUser register(){
-    ATMUser user=new ATMUser();
-    
-    System.out.print("\nEnter your bank account number:");
-    user.setBankAccountNumber(scanner.nextLine().trim());
-    
-    System.out.print("\nEnter your password:");
-    user.setPassword(scanner.nextLine());
-    
-    this.register(user);
-    
-    System.out.print("You account has been setup. ");
-    
-//    user=this.getCustomers().get(user.getBankAccountNumber());
-    
-    System.out.print("Enter your phone number as the login id:");
-    String phone=null;
-    while(true){
-      phone=scanner.nextLine().trim();
-      if(this.phoneToAccount.containsKey(phone))
-        System.out.println("You cannot use this phone because it has been used."
-            + " Verify your phone number or try another one.");
-      else break;
+  ATMUser register() {
+    ATMUser user = new ATMUser();
+
+    System.out.print("\nWhat is your bank account number<Enter>:");
+
+    String account = scanner.nextLine().trim();
+    if (this.customers.containsKey(account)) {
+      System.out.print("\nThis account seems already registerred.");
+      System.out.print("\nPress 1 to continue to login, and 0 to try register again:");
+      int choice = Integer.valueOf(scanner.nextLine());
+      if (choice == 1)
+        this.login();
+      else
+        this.register();
+    } else {
+      user.setBankAccountNumber(account);
+
+      System.out.print("\nChoose a password and press <Enter>:");
+      user.setPassword(scanner.nextLine());
+
+      // user=this.getCustomers().get(user.getBankAccountNumber());
+
+      System.out.print("\nWhat is your phone number?");
+      String phone = "";
+      while (phone!=null && !phone.equals("0")) { // 0 to exit
+        phone = scanner.nextLine().trim();
+        if (this.phoneToAccount.containsKey(phone))
+          System.out.println("Verify your phone number or try another one because it has been used.");
+        else
+          break;
+      }
+      user.setPhoneNumber(phone);
+
+      this.register(user);// only register when having a valid phone number
+
+      System.out.print("\nWhat is your name:");
+      user.setName(scanner.nextLine().trim());
+
+      System.out.print("\nWhich year did you born?");
+      user.setBirthYear(Integer.valueOf(scanner.nextLine()));
+
+      System.out.println("\nAt last, what is your address? (optional - Directly Enter to skip)");
+      String address = scanner.nextLine();
+      if (address != null && !address.isEmpty()) {
+        user.setAddress(address);
+      }else{
+        System.out.println("\nInfo: No address information is recorded.");
+      }
     }
-    user.setPhoneNumber(phone);
-    
-    System.out.println("\nAdd more information (name and birth year),"
-        + " which you can use to reset your password if you forget it.");
-    user.setName(scanner.nextLine().trim());
-    user.setBirthYear(Integer.valueOf(scanner.next()));
-    
-    System.out.println("At last, you can add your address(optional). Please enter to skip.");
-    String address=scanner.nextLine();
-    if(address!=null && !address.isEmpty()) {
-      user.setAddress(address);
-    }
-    
+
     return user;
   }
   
   void register(ATMUser user) {
     if (this.customers.containsKey(user.getBankAccountNumber())
         || this.phoneToAccount.containsKey(user.getPhoneNumber())) {
-      System.out.println("Failed. This bank account or phone number has been used. Please verify and try again!");
+      System.out.println("\nFailed. This bank account or phone number has been used. Please verify and try again!");
       this.register();
     } else {
       this.phoneToAccount.put(user.getPhoneNumber(), user.getBankAccountNumber());
       customers.put(user.getBankAccountNumber(), user);
-      System.out.printf("Finished. Your account is %s, and password is %s", user.getPhoneNumber(), user.getPassword());
+      System.out.printf("\nRegistered. Your login ID is %s, and password is %s \n", user.getPhoneNumber(), user.getPassword());
     }
   }
   
@@ -232,7 +247,7 @@ class ATM {
   }
   
   private void login(){
-    this.login(ATM.MAX_TRY_TIMES, "");
+    this.login(ATM.MAX_TRY_TIMES,"");
   }
   
   boolean promptPasswordReset(){
@@ -265,29 +280,34 @@ class ATM {
     try {
       while (true) {
         this.displayMenu();
-        System.out.print("\nPress a number to start a transaction:");
-        int n = scanner.nextInt();
-        this.displayMenu();
-        if (n == 1)
+        String item = scanner.nextLine();
+        if (item.equals("1"))
           this.getBalance(user);
-        else if (n == 2) {
-          System.out.println("How much would you like to withdraw?");
-          this.withDrawal(user, scanner.nextDouble());
-        } else if (n == 3) {
-          System.out.println("How much would you like to deposit?");
-          this.deposit(user, scanner.nextDouble());
-        } else if (n == 4)
+        else if (item.equals("2")) {
+          System.out.println("\nHow much would you like to withdrawal?");
+          double withdrawal=Double.valueOf(scanner.nextLine());
+          this.withDrawal(user, withdrawal);
+        } else if (item.equals("3")) {
+          System.out.println("\nHow much would you like to deposit?");
+          double deposit=Double.valueOf(scanner.nextLine());
+          this.deposit(user, deposit);
+        } else if (item.equals("4"))
           this.recentTransactions(user);
-        else if (n == 5) {
+        else if (item.equals("5")) {
+          System.out.print("\nSet your new password:");
           this.changePassword(user, scanner.nextLine());
-        } else if (n == 0) {
+        } else if (item.equals("0")) {
           this.exit();
         } else {
-          System.out.println(n + " is not legal, so please try again.");
+          System.out.println(item + " is not valid, so please try again.");
         }
       }
-    } catch (Exception e) {
-      System.out.println("Exception. XXX Something went wrong XXX");
+    } catch (NumberFormatException nfe){
+      System.out.println("The number you enterred is invalid. Please try again.");
+      run(user);
+    }
+    catch (Exception e) {
+      System.out.println("Unhandled EXCEPTION.");
       e.printStackTrace();
     } finally {
       scanner.close();
@@ -295,26 +315,32 @@ class ATM {
   }
   
   private void exit(){
+    System.out.println("See you next time...");
     scanner.close();
-    System.out.println("Thanks! See you next time...");
+    System.exit(0);
   }
   
-  private void login(int tryTimeLeft, String uid){
+  private void login(int tryTimeLeft, String phoneNumber){
     if(tryTimeLeft==0){
-      StringBuilder msg=new StringBuilder("Exit: ");
-      if(uid==null || uid.isEmpty()) msg.append("Your account doesn't exist.");
-      else msg.append("Trying wrong password is more than the limit times.");
+      System.out.println("Failed. You tried more than max limit times.");
+      this.init();
+    }else if(phoneNumber!=null && !phoneNumber.isEmpty()){
+      System.out.println("Your password is wrong. Retry!");
+      login(--tryTimeLeft, phoneNumber);
     }else{
-      System.out.print("\nEnter your phone number and password to login: ");
-      String phone=scanner.nextLine().trim(), pwd=scanner.nextLine();
-      int x=this.authenticate(phone, pwd);
-      if(x==1){
-        this.run(customers.get(this.phoneToAccount.get(phone)));
-      }else if(x==0){
-        System.out.println("Your password is wrong. Retry!");
-        login(--tryTimeLeft, this.phoneToAccount.get(phone));
+      System.out.print("\nEnter your phone number<Enter> and password<Enter> to login: ");
+      String phone=scanner.nextLine().trim(), password=scanner.nextLine();
+      
+      int type=this.authenticate(phone, password);
+      if(type==1) {
+        String account=this.phoneToAccount.get(phone);
+        this.run(this.getCustomers().get(account));
+      }
+      else if(type==0){
+        this.login(--tryTimeLeft, phone);
       }else{
-        login(--tryTimeLeft, "");
+        System.out.println("Your account doesn't even exist.");
+        this.login(--tryTimeLeft, "");
       }
     }
   }
@@ -353,11 +379,16 @@ class ATM {
   }
   
   double getBalance(ATMUser user){
-    return user.getAvailableBalance();
+    double balance=user.getAvailableBalance();
+    System.out.println("Your current balance is: "+ balance);
+    return balance;
   }
   
   boolean withDrawal(ATMUser user, double money){
-    if(user.getAvailableBalance()<money) return false;
+    if(user.getAvailableBalance()<money) {
+      System.out.println("Failed. You don't have enough money.");
+      return false;
+    }
     else{
       double balance=user.getAvailableBalance()-money-this.transactionFee;
       user.setAvailableBalance(balance);
@@ -368,11 +399,12 @@ class ATM {
   }
   
   private void logTransaction(ATMUser user, Transaction trans, double money){
-    String log=trans+" - "+String.format("%.2f", money)+" (fee:"+this.transactionFee+")";
+    String log=trans+" - "+String.format("%8.2f", money)+" (fee:"+this.transactionFee+")";
     if(!transactions.containsKey(user.getBankAccountNumber())){
       transactions.put(user.getBankAccountNumber(), new ArrayList<>());
     }
     transactions.get(user.getBankAccountNumber()).add(log);
+    System.out.println(log);
   }
   
   void deposit(ATMUser user, double money){
@@ -398,16 +430,23 @@ class ATM {
   private boolean changePassword(ATMUser user, String newPassword){
     if(this.customers.containsKey(user.getBankAccountNumber())){
       user.setPassword(newPassword);
+      System.out.println("Your password has been changed to "+newPassword);
       return true;
-    }else return false;
+    }else {
+      System.out.println("No such user. Please check your login status.");
+      return false;
+    }
   }
   
   private void displayMenu() {
-    System.out.println("1.Check Balandce");
-    System.out.println("2.WithDrawal");
-    System.out.println("3.Deposit");
-    System.out.println("4.Recent Transactions");
-    System.out.println("5.Change Password");
-    System.out.println("0.Exit");
+    StringBuilder menu=new StringBuilder("\n*****MENU*****\n");
+    menu.append("Press a number to start a transaction:\n");
+    menu.append("1.Check Balance\n");
+    menu.append("2.WithDrawal\n");
+    menu.append("3.Deposit\n");
+    menu.append("4.Recent Transactions\n");
+    menu.append("5.Change Password\n");
+    menu.append("0.Exit");
+    System.out.println(menu);
   }
 }
