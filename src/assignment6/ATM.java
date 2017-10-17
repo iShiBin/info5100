@@ -117,9 +117,9 @@ class ATM {
   private static final int RECENT_TRANS_NUM=10;
   private static final int MAX_TRY_TIMES=3;
   
-  private static Map<String, ATMUser> customers;//<bankAccountNumber, ATMUser>
-  private static Map<String, String> phoneToAccount;//map phone info. to account
-  private static Map<String, List<String>> transactions;
+  protected static Map<String, ATMUser> customers;//<bankAccountNumber, ATMUser>
+  protected static Map<String, String> phoneToAccount;//map phone info. to account
+  protected static Map<String, List<String>> transactions;
   
   private Scanner scanner;
   
@@ -143,11 +143,11 @@ class ATM {
     this.transactionFee = transactionFee;
   }
 
-  Map<String, ATMUser> getCustomers() {
+  protected Map<String, ATMUser> getCustomers() {
     return customers;
   }
 
-  void setCustomers(Map<String, ATMUser> customers) {
+  protected void setCustomers(Map<String, ATMUser> customers) {
     ATM.customers = customers;
   }
 
@@ -471,24 +471,64 @@ class ATM {
     System.out.println(menu);
   }
   
-  protected void saveData() throws IOException, ClassNotFoundException{
-    File file=new File("./data/ATMUsers.dat");
-    FileOutputStream fo=new FileOutputStream(file);
-    ObjectOutputStream oos=new ObjectOutputStream(fo);
-    oos.writeObject(this.customers);
+  protected static final String USER_DATA_PATH="./data/ATMUsers.dat";
+  protected static final String PHONE_DATA_PATH="./data/PhoneAndAccount.dat";
+  protected static final String TRANS_DATA_PATH="./data/Transactions.dat";
+  
+  protected static void saveData() throws IOException, ClassNotFoundException{
+    File users=new File(USER_DATA_PATH);
+    FileOutputStream fos=new FileOutputStream(users);
+    ObjectOutputStream oos=new ObjectOutputStream(fos);
+    oos.writeObject(ATM.customers);
     oos.close();
-    fo.close();
+    fos.close();
+    
+    File phoneAndAccount=new File(PHONE_DATA_PATH);
+    fos=new FileOutputStream(phoneAndAccount);
+    oos=new ObjectOutputStream(fos);
+    oos.writeObject(ATM.phoneToAccount);
+    oos.close();
+    fos.close();
+    
+    File trans=new File(TRANS_DATA_PATH);
+    fos=new FileOutputStream(trans);
+    oos=new ObjectOutputStream(fos);
+    oos.writeObject(ATM.transactions);
+    oos.close();
+    fos.close();
   }
   
   @SuppressWarnings("unchecked")
-  protected void loadData(String path) throws IOException, ClassNotFoundException{
-    File file = new File(path);
+  protected static void loadData(String path) throws IOException, ClassNotFoundException{
+    File file = new File(ATM.USER_DATA_PATH);
     FileInputStream f = new FileInputStream(file);
     ObjectInputStream s = new ObjectInputStream(f);
-    HashMap<String, ATMUser> users = (HashMap<String, ATMUser>) s.readObject();
-    if(users!=null)System.out.println(users);
-    else System.out.println("NULL");
+    ATM.customers = (Map<String, ATMUser>) s.readObject();
+    s.close();
+    f.close();
+    
+    file = new File(ATM.PHONE_DATA_PATH);
+    f = new FileInputStream(file);
+    s = new ObjectInputStream(f);
+    ATM.phoneToAccount = (Map<String, String>) s.readObject();
+    s.close();
+    f.close();
+    
+    file = new File(ATM.TRANS_DATA_PATH);
+    f = new FileInputStream(file);
+    s = new ObjectInputStream(f);
+    ATM.transactions = (Map<String, List<String>>) s.readObject();
     s.close();
     f.close();
   }
+  
+  protected static void clearData(){
+    File file = new File(ATM.USER_DATA_PATH);
+    file.delete();
+    file = new File(ATM.PHONE_DATA_PATH);
+    file.delete();
+    file=new File(ATM.TRANS_DATA_PATH);
+    file.delete();
+  }
+  
 }

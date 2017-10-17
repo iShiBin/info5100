@@ -102,19 +102,25 @@ public class ATMTest extends ATM{
     Assert.assertTrue("new balance should equal (old balance-withdrawal)",expected==actual);
   }
  
-//  //simulate in the console and check for exceptions
-//  @Test
-//  public void simulate(){
-//    atm.init();
-//  }
+  //simulate in the console and check for exceptions
+  @Test
+  public void simulate(){
+    atm.init();
+  }
   
-//  test save/read data to/from disk
+//  test save data to disk
   @Test
   public void testSaveData() throws ClassNotFoundException, IOException{
     atm.register(user);
+    ATM.saveData();
 
-    atm.saveData();
-    String path="./data/ATMUsers.dat";
-    atm.loadData(path);
   }
+  
+//  test load data from disk
+  @Test
+  public void testLoadData() throws ClassNotFoundException, IOException {
+    loadData(ATM.USER_DATA_PATH);
+    System.out.println(ATM.customers);
+  }
+
 }
