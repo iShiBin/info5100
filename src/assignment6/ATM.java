@@ -54,12 +54,9 @@ class User implements Serializable {
 
 class ATMUser extends User implements Serializable {
 
- /**
-   * 
-   */
   private static final long serialVersionUID = -1540178469363304947L;
-  
-private double availableBalance;
+
+  private double availableBalance;
   private String password;
   
   double getAvailableBalance() {
@@ -121,12 +118,28 @@ class ATM {
   private static final int RECENT_TRANS_NUM=10;
   private static final int MAX_TRY_TIMES=3;
 
+  /**
+   * 'customers' to store the main ATMUser information by mapping the bank account number to ATMUser
+   */
+  protected static Map<String, ATMUser> customers;
   
-  protected static Map<String, ATMUser> customers;//<bankAccountNumber, ATMUser>
+  /**
+   * To enable login using phone number, I map the phone number to the primary identify "bank account number.
+   * If it allows user to login using other identity like email, just build another mapping. That's it.
+   */
   protected static Map<String, String> phoneToAccount;//map phone info. to account
+  
+  /**
+   * This map 'transactions' stores the historical transactions information and shares with other ATM instances. 
+   */
   protected static Map<String, List<String>> transactions;
   
+  /**
+   * Unified input reader to read user's input.
+   */
   private Scanner scanner;
+  
+  //Note: Most of the methods are with 'default' access privilege in order to share with ATMTest for unit test purpose.
   
   double getAvailableAmountInMachine() {
     return availableAmountInMachine;
@@ -156,42 +169,65 @@ class ATM {
     ATM.customers = customers;
   }
 
-  static Map<String, List<String>> getTransactions() {
+  protected static Map<String, List<String>> getTransactions() {
     return transactions;
   }
 
-  static void setTransactions(Map<String, List<String>> transactions) {
+  protected static void setTransactions(Map<String, List<String>> transactions) {
     ATM.transactions = transactions;
   }
 
-  protected ATM(){
-    this(ATM.DEFAULT_AMOUNT_IN_MACNINE,ATM.DEFAULT_TRANSACTION_FEE);
+  /**
+   * This is the default constructor and loads the history data.
+   */
+  public ATM(){
+    this(true, true);
   }
   
-  protected ATM(boolean loadHistoryData) throws ClassNotFoundException, IOException{
-    this.availableAmountInMachine=ATM.DEFAULT_AMOUNT_IN_MACNINE;
-    this.transactionFee=ATM.DEFAULT_TRANSACTION_FEE;
+  /**
+   * 
+   * @param loadHistoryData: True to load the history records. False if no load.
+   */
+  public ATM(boolean loadHistoryData, boolean startConsole) {
+    this(ATM.DEFAULT_AMOUNT_IN_MACNINE, ATM.DEFAULT_TRANSACTION_FEE, loadHistoryData, startConsole);    
+  }
+  
+  /**
+   * Initialize the availableAmountInMachine, transactionFee, and load the history data by default.
+   * @param money
+   * @param fee
+   */
+  public ATM(double money, double fee){
+    this(money, fee, true, true);
+  }
+  
+  /**
+   * Initialize the availableAmountInMachine, transactionFee and all other fields.
+   * And then start this application. It is a protected constructor
+   * because careless use may wipe the whole transaction data.
+   * @param money: The available amount of money this machine has.
+   * @param fee: Some fee will be charged on every transaction.
+   * @param loadHistoricalRecords: True to load history account records. False if you do not want to.
+   */
+  protected ATM(double money, double fee, boolean loadHistoricalRecords, boolean startConsole){
     scanner=new Scanner(System.in);
-    
-    if(loadHistoryData){
-      ATM.loadData();
-    }else{
+    availableAmountInMachine=money;
+    transactionFee=fee;
+    if(!loadHistoricalRecords){
       ATM.customers=new HashMap<>();
       ATM.phoneToAccount=new HashMap<>();
       ATM.transactions=new HashMap<>();
+    }else{
+      ATM.loadData();
     }
+    
+    if(startConsole) this.init();
   }
   
-  ATM(double money, double fee){
-    availableAmountInMachine=money;
-    transactionFee=fee;
-    scanner=new Scanner(System.in);
-    ATM.customers=new HashMap<>();
-    ATM.phoneToAccount=new HashMap<>();
-    ATM.transactions=new HashMap<>();
-  }
-  
-  public void init (){
+  /**
+   * Welcome the user and initialize before starting a real transaction.
+   */
+  private void init (){
     System.out.print("Welcome! Are you a new user? (1:Yes/0:No and log me in./9:No, but I forget my password.)");
     try {
       String item=scanner.nextLine();
@@ -218,6 +254,10 @@ class ATM {
     }
   }
   
+  /**
+   * Interact with the end user to register.
+   * @return  A new ATMUser which will be used in future operations. 
+   */
   ATMUser register() {
     ATMUser user = new ATMUser();
 
@@ -271,6 +311,10 @@ class ATM {
     return user;
   }
   
+  /**
+   * Register this user as an legal ATM user.
+   * @param user: A potential customer.
+   */
   void register(ATMUser user) {
     if (customers.containsKey(user.getBankAccountNumber())
         || phoneToAccount.containsKey(user.getPhoneNumber())) {
@@ -283,7 +327,15 @@ class ATM {
     }
   }
   
-  void register(String name, int year, String phone, String bankAccount, String password){
+  /**
+   * Expose for test purpose by ATMTest class.
+   * @param name
+   * @param year
+   * @param phone
+   * @param bankAccount
+   * @param password
+   */
+  protected void register(String name, int year, String phone, String bankAccount, String password){
     ATMUser user=new ATMUser(name, year, phone, bankAccount, password);
     this.register(user);
   }
@@ -292,6 +344,11 @@ class ATM {
     this.login(ATM.MAX_TRY_TIMES,"");
   }
   
+  /**
+   * Interact with user to reset the password.
+   * NumberFormatException: The birth year may not be a valid integer year.
+   * @return True: The password reset succeeded. False: Reset failed.
+   */
   boolean promptPasswordReset() throws NumberFormatException {
     System.out.print("\nTo reset your password, please enter your name, year of birth, and phone number:");
     String name=scanner.nextLine().trim();
@@ -308,6 +365,14 @@ class ATM {
     }
   }
   
+  /**
+   * This is the actual password reset method.
+   * @param name
+   * @param birthYear
+   * @param phone
+   * @param newPassword
+   * @return
+   */
   boolean resetPassword(String name, int birthYear, String phone, String newPassword){
     if(this.validate(name, birthYear, phone)){
       return this.changePassword(customers.get(phoneToAccount.get(phone)), newPassword);
@@ -316,6 +381,10 @@ class ATM {
     }
   }
   
+  /**
+   * Daemon Process: It runs forever unless the user choose to exit or some exception happens.
+   * @param user: A valid and authorized ATM user.
+   */
   private void run(ATMUser user) {
     
     try {
@@ -355,12 +424,22 @@ class ATM {
     }
   }
   
+  /**
+   * Close the input stream and exit this program, and save the data before quiting.
+   */
   private void exit(){
-    System.out.println("See you next time...");
+    System.out.println("Bye. See you next time...");
     scanner.close();
-    System.exit(0);
+    ATM.saveData();
+//    System.exit(0);
+    return;
   }
   
+  /**
+   * Check whether this is an authenticated user.
+   * @param tryTimeLeft: A user can only try ATM.MAX_TRY_TIMES at most for security concerns.
+   * @param phoneNumber: User's phone number.
+   */
   private void login(int tryTimeLeft, String phoneNumber){
     if(tryTimeLeft==0){
       System.out.println("Failed. You tried more than max limit times.");
@@ -390,16 +469,16 @@ class ATM {
    * Expose for testing purpose.
    * @param phone
    * @param password
-   * @return
+   * @return True if login succeeds. Otherwise, return False. 
    */
-  boolean login(String phone, String password){
+  protected boolean login(String phone, String password){
     if(this.authenticate(phone, password)==1) return true;
     else return false;
   }
   
   /**
-   * 
-   * @param account
+   * Authenticate this user by the phone number and password
+   * @param phone
    * @param password
    * @return -1: id does not exist; 0: phone exists but password is wrong; 1: authenticated successfully
    */
@@ -410,6 +489,13 @@ class ATM {
     else return 0;
   }
   
+  /**
+   * Validate whether it is an actual existed user for password reset purpose.
+   * @param name: a valid customer name
+   * @param birthYear
+   * @param phone
+   * @return True if it is a valid user, and False if negative.
+   */
   private boolean validate(String name, int birthYear, String phone) {
     ATMUser user = customers.get(phoneToAccount.get(phone));
     if (user != null && user.getName().equals(name) && user.getBirthYear() == birthYear
@@ -419,13 +505,24 @@ class ATM {
       return false;
   }
   
+  /**
+   * Get the user's current balance.
+   * @param user: A valid registered ATM user.
+   * @return The current balance for the current user.
+   */
   double getBalance(ATMUser user){
     double balance=user.getAvailableBalance();
     System.out.println("Your current balance is: "+ balance);
     return balance;
   }
   
-  boolean withDrawal(ATMUser user, double money){
+  /**
+   * To get some money out from the ATM machine.
+   * @param user: a valid ATM user.
+   * @param money: the money amount the user wants to get.
+   * @return True: if the withdrawal succeeds. False: If the current balance is less that the money to withdrawal.
+   */
+  protected boolean withDrawal(ATMUser user, double money){
     if(user.getAvailableBalance()<money) {
       System.out.println("Failed. You don't have enough money.");
       return false;
@@ -439,6 +536,12 @@ class ATM {
     }
   }
   
+  /**
+   * Log a transaction in the transaction records on deposit or withdrawal.
+   * @param user
+   * @param trans
+   * @param money
+   */
   private void logTransaction(ATMUser user, Transaction trans, double money){
     String log=trans+" - "+String.format("%8.2f", money)+" (fee:"+this.transactionFee+")";
     if(!transactions.containsKey(user.getBankAccountNumber())){
@@ -448,13 +551,22 @@ class ATM {
     System.out.println(log);
   }
   
-  void deposit(ATMUser user, double money){
+  /**
+   * Deposit some money for this user, and invoke the logTransaction method to log this transaction.
+   * @param user
+   * @param money
+   */
+  protected void deposit(ATMUser user, double money){
     double balance=user.getAvailableBalance()+money-this.transactionFee;
     user.setAvailableBalance(balance);
     this.availableAmountInMachine+=money;
     this.logTransaction(user, Transaction.Deposit, money);
   }
   
+  /**
+   * Get the recent (defined by ATM.RECENT_TRANS_NUM) transactions of this user.
+   * @param user: a valid user.
+   */
   void recentTransactions(ATMUser user){
     List<String> list=transactions.get(user.getBankAccountNumber());
     if(list!=null) {
@@ -469,6 +581,12 @@ class ATM {
     }
   }
   
+  /**
+   * Change the password for a valid user.
+   * @param user
+   * @param newPassword
+   * @return True if succeed otherwise return False.
+   */
   private boolean changePassword(ATMUser user, String newPassword){
     if(customers.containsKey(user.getBankAccountNumber())){
       user.setPassword(newPassword);
@@ -480,6 +598,9 @@ class ATM {
     }
   }
   
+  /**
+   * Display the menu in the console so that a user can choose.
+   */
   private void displayMenu() {
     StringBuilder menu=new StringBuilder("\n*****MENU*****\n");
     menu.append("Press a number to start a transaction:\n");
@@ -492,58 +613,85 @@ class ATM {
     System.out.println(menu);
   }
   
+//  Note: This is for saving the data to disk so that it won't lose after program quit.
   protected static final String USER_DATA_PATH="./data/ATMUsers.dat";
   protected static final String PHONE_DATA_PATH="./data/PhoneAndAccount.dat";
   protected static final String TRANS_DATA_PATH="./data/Transactions.dat";
   
-  protected static void saveData() throws IOException, ClassNotFoundException{
-    File users=new File(USER_DATA_PATH);
-    FileOutputStream fos=new FileOutputStream(users);
-    ObjectOutputStream oos=new ObjectOutputStream(fos);
-    oos.writeObject(ATM.customers);
-    oos.close();
-    fos.close();
-    
-    File phoneAndAccount=new File(PHONE_DATA_PATH);
-    fos=new FileOutputStream(phoneAndAccount);
-    oos=new ObjectOutputStream(fos);
-    oos.writeObject(ATM.phoneToAccount);
-    oos.close();
-    fos.close();
-    
-    File trans=new File(TRANS_DATA_PATH);
-    fos=new FileOutputStream(trans);
-    oos=new ObjectOutputStream(fos);
-    oos.writeObject(ATM.transactions);
-    oos.close();
-    fos.close();
+  /**
+   * Serialize to save the register users information, phone--account mapping and transaction records. 
+   */
+  protected static void saveData(){
+    try {
+      File users=new File(USER_DATA_PATH);
+      FileOutputStream fos=new FileOutputStream(users);
+      ObjectOutputStream oos=new ObjectOutputStream(fos);
+      oos.writeObject(ATM.customers);
+      oos.close();
+      fos.close();
+      
+      File phoneAndAccount=new File(PHONE_DATA_PATH);
+      fos=new FileOutputStream(phoneAndAccount);
+      oos=new ObjectOutputStream(fos);
+      oos.writeObject(ATM.phoneToAccount);
+      oos.close();
+      fos.close();
+      
+      File trans=new File(TRANS_DATA_PATH);
+      fos=new FileOutputStream(trans);
+      oos=new ObjectOutputStream(fos);
+      oos.writeObject(ATM.transactions);
+      oos.close();
+      fos.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
   
+  /**
+   * Load the previously saved data.
+   */
   @SuppressWarnings("unchecked")
-  protected static void loadData() throws IOException, ClassNotFoundException{
-    File file = new File(ATM.USER_DATA_PATH);
-    FileInputStream f = new FileInputStream(file);
-    ObjectInputStream s = new ObjectInputStream(f);
-    ATM.customers = (Map<String, ATMUser>) s.readObject();
-    s.close();
-    f.close();
-    
-    file = new File(ATM.PHONE_DATA_PATH);
-    f = new FileInputStream(file);
-    s = new ObjectInputStream(f);
-    ATM.phoneToAccount = (Map<String, String>) s.readObject();
-    s.close();
-    f.close();
-    
-    file = new File(ATM.TRANS_DATA_PATH);
-    f = new FileInputStream(file);
-    s = new ObjectInputStream(f);
-    ATM.transactions = (Map<String, List<String>>) s.readObject();
-    s.close();
-    f.close();
+  protected static void loadData(){
+    try {
+      File file = new File(ATM.USER_DATA_PATH);
+      FileInputStream f = new FileInputStream(file);
+      ObjectInputStream s = new ObjectInputStream(f);
+      ATM.customers = (Map<String, ATMUser>) s.readObject();
+      s.close();
+      f.close();
+      
+      file = new File(ATM.PHONE_DATA_PATH);
+      f = new FileInputStream(file);
+      s = new ObjectInputStream(f);
+      ATM.phoneToAccount = (Map<String, String>) s.readObject();
+      s.close();
+      f.close();
+      
+      file = new File(ATM.TRANS_DATA_PATH);
+      f = new FileInputStream(file);
+      s = new ObjectInputStream(f);
+      ATM.transactions = (Map<String, List<String>>) s.readObject();
+      s.close();
+      f.close();
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
   
-  protected static void clearData(){
+  /**
+   * Just in case to clear all the data. Probably never used.
+   */
+  private static void clearData(){
     File file = new File(ATM.USER_DATA_PATH);
     file.delete();
     file = new File(ATM.PHONE_DATA_PATH);

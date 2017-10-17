@@ -148,3 +148,332 @@ What I have done are:
 * add `catch (FileNotFoundException e)` because of statement `input = new RandomAccessFile(file, "r");`
 * add `catch (IOException e) ` because of `line = input.readLine()`
 * add `throws IOException` in the method signature because this line `input.close();` in the `finally` code block might cause exception and it is urly to write nested `try...catch ` in this section. So I move it to the method signatruel.
+
+# 3. Design an **Automated Teller Machine**
+
+## Main Source Code
+
+\src\assignment6\ATM.java
+
+## Source Code Docs
+
+\doc\assignment6\User.html
+
+\doc\assignment6\ATMUser.html
+
+\doc\assignment6\ATM.html
+
+etc...
+
+## JUnit Test Code
+
+\src\assignment6\ATMTest.java
+
+**JUnit Test Screenshot**
+
+The screenshot is in \doc\assignment6\JUnitTestCases.png, and here is one regular test case.
+
+```
+Welcome! Are you a new user? (1:Yes/0:No and log me in./9:No, but I forget my password.)1
+
+What is your bank account number<Enter>:44006645206
+
+Choose a password and press <Enter>:password1
+
+What is your phone number?2068180007
+
+Registered. Your login ID is 2068180007, and password is password1 
+
+What is your name:BinShi
+
+Which year did you born?1985
+
+At last, what is your address? (optional - Directly Enter to skip)
+somewhere in the earth
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+1
+Your current balance is: 0.0
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+3
+
+How much would you like to deposit?
+100
+Deposit    -   100.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+50
+WithDrawal -    50.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+100
+Failed. You don't have enough money.
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+3
+
+How much would you like to deposit?
+500
+Deposit    -   500.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+10
+WithDrawal -    10.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+100
+WithDrawal -   100.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+4
+
+The recent 10 transactions are:
+WithDrawal -   100.00 (fee:1.0)
+WithDrawal -    10.00 (fee:1.0)
+Deposit    -   500.00 (fee:1.0)
+WithDrawal -    50.00 (fee:1.0)
+Deposit    -   100.00 (fee:1.0)
+**End of rencent transactions**
+
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+1
+Your current balance is: 435.0
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+20
+WithDrawal -    20.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+30
+WithDrawal -    30.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+50
+WithDrawal -    50.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+100
+WithDrawal -   100.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+70
+WithDrawal -    70.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+50
+WithDrawal -    50.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+35
+35 is not valid, so please try again.
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+2
+
+How much would you like to withdrawal?
+198
+Failed. You don't have enough money.
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+3
+
+How much would you like to deposit?
+100
+Deposit    -   100.00 (fee:1.0)
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+4
+
+The recent 10 transactions are:
+Deposit    -   100.00 (fee:1.0)
+WithDrawal -    50.00 (fee:1.0)
+WithDrawal -    70.00 (fee:1.0)
+WithDrawal -   100.00 (fee:1.0)
+WithDrawal -    50.00 (fee:1.0)
+WithDrawal -    30.00 (fee:1.0)
+WithDrawal -    20.00 (fee:1.0)
+WithDrawal -   100.00 (fee:1.0)
+WithDrawal -    10.00 (fee:1.0)
+Deposit    -   500.00 (fee:1.0)
+WithDrawal -    50.00 (fee:1.0)
+**End of rencent transactions**
+
+
+*****MENU*****
+Press a number to start a transaction:
+1.Check Balance
+2.WithDrawal
+3.Deposit
+4.Recent Transactions
+5.Change Password
+0.Exit
+0
+Bye. See you next time...
+
+```
+

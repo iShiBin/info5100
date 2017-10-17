@@ -6,9 +6,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ATMTest extends ATM{
+public class ATMTest {
   
-  ATM atm=new ATM(10000, 1);
+  // the program will automatically start when a new ATM machine is constructed
+  ATM atm=new ATM(10000, 1, false, false);
   ATMUser user=new ATMUser("Bin", 1985, "2068180000", "44006645", "NewBin");
 
   @Test
@@ -102,15 +103,15 @@ public class ATMTest extends ATM{
     Assert.assertTrue("new balance should equal (old balance-withdrawal)",expected==actual);
   }
  
-  //simulate in the console and check for exceptions
-  @Test
-  public void simulate(){
-    atm.init();
-  }
+//  //simulate in the console and check for exceptions
+//  @Test
+//  public void simulate(){
+//    atm.init();
+//  }
   
 //  test save data to disk
   @Test
-  public void testSaveData() throws ClassNotFoundException, IOException{
+  public void saveData() throws ClassNotFoundException, IOException{
     atm.register(user);
     ATM.saveData();
 
@@ -118,8 +119,8 @@ public class ATMTest extends ATM{
   
 //  test load data from disk
   @Test
-  public void testLoadData() throws ClassNotFoundException, IOException {
-    loadData();
+  public void loadData() throws ClassNotFoundException, IOException {
+    ATM.loadData();
     System.out.println(ATM.customers);
   }
 
