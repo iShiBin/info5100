@@ -187,6 +187,10 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
   
 }
 ```
+## Score and Comments
+
+Awesome Work.  
+Score **10** + extra credit **2** ; Total Score **10**
 
 # Accomplishments
 
@@ -202,6 +206,8 @@ The numbet of characters in the first group could be less than K, so the key to 
 2. One the number of chars %K = 0, add a '-' and then continue to scan the array.
 3. When the pointer reaches index '0', quit the process.
 4. Reverse the result array and return it.
+
+score 2  
 
 ### Solution
 
@@ -225,7 +231,9 @@ public String splitLicenseKey(String key, int k){
 
 ## 2. Rock Paper Scissors Game
 
-This assignment is to design some classes. So inheritance will be used a lot in this case. Here is the solution.
+This assignment is to design some classes. So inheritance will be used a lot in this case. Here is the solution.  
+
+score 2.  
 
 ```java
 class Tool{
@@ -318,7 +326,9 @@ The output after running the driver class is.
 
 ## 3. IP
 
-The trick to solve this problem is to design a helper method `splitIP()` because the Java API like  `split()`are not allowed to use. This is my solution source code.
+The trick to solve this problem is to design a helper method `splitIP()` because the Java API like  `split()`are not allowed to use. This is my solution source code.  
+
+score 2
 
 ```java
 class IpAddress{
@@ -399,7 +409,9 @@ After running the driver, the result is the same with the description of this as
 
 ## 4. Students Register Classes
 
-Here is my solution.
+Here is my solution.  
+
+score 2
 
 ```java
 class Student{
@@ -573,7 +585,9 @@ Here is the logical steps to achieve the transform of integer num.
 1. Start from the left of the help array values (say index i=0), set k=num/values[i].
 2. If k>0, append symbols[i] to the result string `roman`, and deduce values[i] from the orginal num.
 3. Set i=i+1 and continue this calculation until num=0
-4. At last, `roman` is the desired roman numerical so return it as a string.
+4. At last, `roman` is the desired roman numerical so return it as a string.  
+
+score 2
 
 ### Solution
 
@@ -600,7 +614,9 @@ public String intToRoman(int num) {
 
 ## Approach I: Use Arrays.sort()
 
-As a start, I will take a dummy solution of using Java's Arrays.sort() API, which has s time complexity of $O((m+n)*log(m+n))$, and a space complexity of $O(m+n)$ because it uses an extra nums[] array to hold all the elments in these two input arrays.
+As a start, I will take a dummy solution of using Java's Arrays.sort() API, which has s time complexity of $O((m+n)*log(m+n))$, and a space complexity of $O(m+n)$ because it uses an extra nums[] array to hold all the elments in these two input arrays.  
+
+extra credit 2
 
 ```java
 class Solution {
