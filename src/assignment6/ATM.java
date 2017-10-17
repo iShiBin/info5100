@@ -112,10 +112,15 @@ enum Transaction {
 }
 
 class ATM {
+  private static final double DEFAULT_AMOUNT_IN_MACNINE = 10000;
+  private static final double DEFAULT_TRANSACTION_FEE = 0.2;
   private double availableAmountInMachine;
   private double transactionFee;
+
+  
   private static final int RECENT_TRANS_NUM=10;
   private static final int MAX_TRY_TIMES=3;
+
   
   protected static Map<String, ATMUser> customers;//<bankAccountNumber, ATMUser>
   protected static Map<String, String> phoneToAccount;//map phone info. to account
@@ -159,15 +164,31 @@ class ATM {
     ATM.transactions = transactions;
   }
 
-  protected ATM(){}
+  protected ATM(){
+    this(ATM.DEFAULT_AMOUNT_IN_MACNINE,ATM.DEFAULT_TRANSACTION_FEE);
+  }
+  
+  protected ATM(boolean loadHistoryData) throws ClassNotFoundException, IOException{
+    this.availableAmountInMachine=ATM.DEFAULT_AMOUNT_IN_MACNINE;
+    this.transactionFee=ATM.DEFAULT_TRANSACTION_FEE;
+    scanner=new Scanner(System.in);
+    
+    if(loadHistoryData){
+      ATM.loadData();
+    }else{
+      ATM.customers=new HashMap<>();
+      ATM.phoneToAccount=new HashMap<>();
+      ATM.transactions=new HashMap<>();
+    }
+  }
   
   ATM(double money, double fee){
     availableAmountInMachine=money;
     transactionFee=fee;
-    customers=new HashMap<>();
-    transactions=new HashMap<>();
     scanner=new Scanner(System.in);
-    phoneToAccount=new HashMap<>();
+    ATM.customers=new HashMap<>();
+    ATM.phoneToAccount=new HashMap<>();
+    ATM.transactions=new HashMap<>();
   }
   
   public void init (){
@@ -499,7 +520,7 @@ class ATM {
   }
   
   @SuppressWarnings("unchecked")
-  protected static void loadData(String path) throws IOException, ClassNotFoundException{
+  protected static void loadData() throws IOException, ClassNotFoundException{
     File file = new File(ATM.USER_DATA_PATH);
     FileInputStream f = new FileInputStream(file);
     ObjectInputStream s = new ObjectInputStream(f);

@@ -119,7 +119,7 @@ public class ATMTest extends ATM{
 //  test load data from disk
   @Test
   public void testLoadData() throws ClassNotFoundException, IOException {
-    loadData(ATM.USER_DATA_PATH);
+    loadData();
     System.out.println(ATM.customers);
   }
 
