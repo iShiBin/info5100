@@ -16,15 +16,15 @@ public class ATMTest {
   public void register() {
     atm.register(user);
     String info="Bin, 1985, 2068180000, 44006645, NewBin, 0.0";
-    Assert.assertTrue(info.equals(atm.getCustomers().get("2068180000").toString()));
+    Assert.assertTrue(info.equals(atm.getCustomers().get(user.getBankAccountNumber()).toString()));
   }
   
   @Test
   public void resetPassword(){
     atm.register(user);
     String newPassword="IamBin";
-    atm.resetPassword(user.getName(), user.getAge(), user.getPhoneNumber(), newPassword);
-    Assert.assertTrue(newPassword.equals(atm.getCustomers().get(user.getPhoneNumber()).getPassword()));
+    atm.resetPassword(user.getName(), user.getBirthYear(), user.getPhoneNumber(), newPassword);
+    Assert.assertTrue(newPassword.equals(atm.getCustomers().get(user.getBankAccountNumber()).getPassword()));
   }
   
   @Test
@@ -39,7 +39,7 @@ public class ATMTest {
     this.register();
     double money = 100+atm.getTransactionFee();
     atm.deposit(user, money);
-    double balance=atm.getCustomers().get(user.getPhoneNumber()).getAvailableBalance();
+    double balance=atm.getCustomers().get(user.getBankAccountNumber()).getAvailableBalance();
     Assert.assertTrue( balance == money-atm.getTransactionFee());
   }
   
@@ -49,7 +49,7 @@ public class ATMTest {
     this.deposit();
     double money = 10-atm.getTransactionFee();
     atm.withDrawal(user, money);
-    double balance=atm.getCustomers().get(user.getPhoneNumber()).getAvailableBalance();
+    double balance=atm.getCustomers().get(user.getBankAccountNumber()).getAvailableBalance();
     Assert.assertTrue(balance==90);
     
 //    expect to fail to get more money than the atm has 
@@ -61,7 +61,7 @@ public class ATMTest {
   public void showRecentTransactions(){
 //    no transaction
     this.register();
-    List<String> trans=ATM.getTransactions().get(user.getPhoneNumber());
+    List<String> trans=ATM.getTransactions().get(user.getBankAccountNumber());
     Assert.assertTrue("No transactions.", trans==null || trans.isEmpty());
     
 //    a few transactions less than the default displaying number
@@ -70,7 +70,7 @@ public class ATMTest {
     atm.withDrawal(user, money);
     atm.withDrawal(user, money);
     atm.recentTransactions(user);
-    Assert.assertFalse(ATM.getTransactions().get(user.getPhoneNumber()).isEmpty());
+    Assert.assertFalse(ATM.getTransactions().get(user.getBankAccountNumber()).isEmpty());
     
 //     many more transactions
     for (int i = 100; i <= 1000; i+=100) {
@@ -78,7 +78,7 @@ public class ATMTest {
       atm.withDrawal(user, i);
     }
     atm.recentTransactions(user);
-    Assert.assertTrue(ATM.getTransactions().get(user.getPhoneNumber()).size()>10);
+    Assert.assertTrue(ATM.getTransactions().get(user.getBankAccountNumber()).size()>10);
   }
   
   @Test
