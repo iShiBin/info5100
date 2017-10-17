@@ -551,5 +551,4 @@ class ATM {
     file=new File(ATM.TRANS_DATA_PATH);
     file.delete();
   }
-  
 }
