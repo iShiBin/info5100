@@ -1,12 +1,14 @@
 package assignment6;
 
+import java.io.*;
 import java.util.*;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
-class User{
+class User implements Serializable {
+  
   private String name, address, phoneNumber, bankAccountNumber;
   private int birthYear;
+  
+  private static final long serialVersionUID = -1540178469363304947L;
   
   String getName() {
     return name;
@@ -46,12 +48,18 @@ class User{
   }
   
   public String toString(){
-    return name+", "+birthYear+", "+phoneNumber+", "+bankAccountNumber;
+    return name+", "+birthYear+", "+phoneNumber+", "+bankAccountNumber+", "+address;
   }
 }
 
-class ATMUser extends User{
-  private double availableBalance;
+class ATMUser extends User implements Serializable {
+
+ /**
+   * 
+   */
+  private static final long serialVersionUID = -1540178469363304947L;
+  
+private double availableBalance;
   private String password;
   
   double getAvailableBalance() {
@@ -109,8 +117,8 @@ class ATM {
   private static final int RECENT_TRANS_NUM=10;
   private static final int MAX_TRY_TIMES=3;
   
-  private Map<String, ATMUser> customers;//<bankAccountNumber, ATMUser>
-  private Map<String, String> phoneToAccount;//map phone info. to account
+  private static Map<String, ATMUser> customers;//<bankAccountNumber, ATMUser>
+  private static Map<String, String> phoneToAccount;//map phone info. to account
   private static Map<String, List<String>> transactions;
   
   private Scanner scanner;
@@ -128,7 +136,7 @@ class ATM {
   }
 
   void setPhoneToAccount(Map<String, String> phoneToAccount) {
-    this.phoneToAccount = phoneToAccount;
+    ATM.phoneToAccount = phoneToAccount;
   }
 
   void setTransactionFee(double transactionFee) {
@@ -140,7 +148,7 @@ class ATM {
   }
 
   void setCustomers(Map<String, ATMUser> customers) {
-    this.customers = customers;
+    ATM.customers = customers;
   }
 
   static Map<String, List<String>> getTransactions() {
@@ -151,13 +159,15 @@ class ATM {
     ATM.transactions = transactions;
   }
 
+  protected ATM(){}
+  
   ATM(double money, double fee){
     availableAmountInMachine=money;
     transactionFee=fee;
     customers=new HashMap<>();
     transactions=new HashMap<>();
     scanner=new Scanner(System.in);
-    this.phoneToAccount=new HashMap<>();
+    phoneToAccount=new HashMap<>();
   }
   
   public void init (){
@@ -193,7 +203,7 @@ class ATM {
     System.out.print("\nWhat is your bank account number<Enter>:");
 
     String account = scanner.nextLine().trim();
-    if (this.customers.containsKey(account)) {
+    if (customers.containsKey(account)) {
       System.out.print("\nThis account seems already registerred.");
       System.out.print("\nPress 1 to continue to login, and 0 to try register again:");
       String item = scanner.nextLine();
@@ -213,7 +223,7 @@ class ATM {
       String phone = "";
       while (phone != null && !phone.equals("0")) { // 0 to exit
         phone = scanner.nextLine().trim();
-        if (this.phoneToAccount.containsKey(phone))
+        if (phoneToAccount.containsKey(phone))
           System.out.println("Verify your phone number or try another one because it has been used.");
         else
           break;
@@ -241,12 +251,12 @@ class ATM {
   }
   
   void register(ATMUser user) {
-    if (this.customers.containsKey(user.getBankAccountNumber())
-        || this.phoneToAccount.containsKey(user.getPhoneNumber())) {
+    if (customers.containsKey(user.getBankAccountNumber())
+        || phoneToAccount.containsKey(user.getPhoneNumber())) {
       System.out.println("\nFailed. This bank account or phone number has been used. Please verify and try again!");
       this.register();
     } else {
-      this.phoneToAccount.put(user.getPhoneNumber(), user.getBankAccountNumber());
+      phoneToAccount.put(user.getPhoneNumber(), user.getBankAccountNumber());
       customers.put(user.getBankAccountNumber(), user);
       System.out.printf("\nRegistered. Your login ID is %s, and password is %s \n", user.getPhoneNumber(), user.getPassword());
     }
@@ -279,7 +289,7 @@ class ATM {
   
   boolean resetPassword(String name, int birthYear, String phone, String newPassword){
     if(this.validate(name, birthYear, phone)){
-      return this.changePassword(this.customers.get(this.phoneToAccount.get(phone)), newPassword);
+      return this.changePassword(customers.get(phoneToAccount.get(phone)), newPassword);
     }else{
       return false;
     }
@@ -343,7 +353,7 @@ class ATM {
       
       int type=this.authenticate(phone, password);
       if(type==1) {
-        String account=this.phoneToAccount.get(phone);
+        String account=phoneToAccount.get(phone);
         this.run(this.getCustomers().get(account));
       }
       else if(type==0){
@@ -373,14 +383,14 @@ class ATM {
    * @return -1: id does not exist; 0: phone exists but password is wrong; 1: authenticated successfully
    */
   private int authenticate(String phone, String password){
-    ATMUser user=customers.get(this.phoneToAccount.get(phone));
+    ATMUser user=customers.get(phoneToAccount.get(phone));
     if(user==null) return -1;
     else if(user.getPassword().equals(password)) return 1;
     else return 0;
   }
   
   private boolean validate(String name, int birthYear, String phone) {
-    ATMUser user = customers.get(this.phoneToAccount.get(phone));
+    ATMUser user = customers.get(phoneToAccount.get(phone));
     if (user != null && user.getName().equals(name) && user.getBirthYear() == birthYear
         && user.getPhoneNumber().equals(phone))
       return true;
@@ -439,7 +449,7 @@ class ATM {
   }
   
   private boolean changePassword(ATMUser user, String newPassword){
-    if(this.customers.containsKey(user.getBankAccountNumber())){
+    if(customers.containsKey(user.getBankAccountNumber())){
       user.setPassword(newPassword);
       System.out.println("Your password has been changed to "+newPassword);
       return true;
@@ -459,5 +469,26 @@ class ATM {
     menu.append("5.Change Password\n");
     menu.append("0.Exit");
     System.out.println(menu);
+  }
+  
+  protected void saveData() throws IOException, ClassNotFoundException{
+    File file=new File("./data/ATMUsers.dat");
+    FileOutputStream fo=new FileOutputStream(file);
+    ObjectOutputStream oos=new ObjectOutputStream(fo);
+    oos.writeObject(this.customers);
+    oos.close();
+    fo.close();
+  }
+  
+  @SuppressWarnings("unchecked")
+  protected void loadData(String path) throws IOException, ClassNotFoundException{
+    File file = new File(path);
+    FileInputStream f = new FileInputStream(file);
+    ObjectInputStream s = new ObjectInputStream(f);
+    HashMap<String, ATMUser> users = (HashMap<String, ATMUser>) s.readObject();
+    if(users!=null)System.out.println(users);
+    else System.out.println("NULL");
+    s.close();
+    f.close();
   }
 }

@@ -1,21 +1,20 @@
 package assignment6;
 
-import static org.junit.Assert.*;
-
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ATMTest {
+public class ATMTest extends ATM{
   
   ATM atm=new ATM(10000, 1);
   ATMUser user=new ATMUser("Bin", 1985, "2068180000", "44006645", "NewBin");
 
   @Test
-  public void register() {
+  public void testRegister() {
     atm.register(user);
-    String info="Bin, 1985, 2068180000, 44006645, NewBin, 0.0";
+    String info=user.toString();
     Assert.assertTrue(info.equals(atm.getCustomers().get(user.getBankAccountNumber()).toString()));
   }
   
@@ -36,7 +35,7 @@ public class ATMTest {
 //  test deposit and fee
   @Test
   public void deposit(){
-    this.register();
+    atm.register(user);
     double money = 100+atm.getTransactionFee();
     atm.deposit(user, money);
     double balance=atm.getCustomers().get(user.getBankAccountNumber()).getAvailableBalance();
@@ -108,4 +107,14 @@ public class ATMTest {
 //  public void simulate(){
 //    atm.init();
 //  }
+  
+//  test save/read data to/from disk
+  @Test
+  public void testSaveData() throws ClassNotFoundException, IOException{
+    atm.register(user);
+
+    atm.saveData();
+    String path="./data/ATMUsers.dat";
+    atm.loadData(path);
+  }
 }
