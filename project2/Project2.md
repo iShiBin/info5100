@@ -1,4 +1,5 @@
 # Project 2
+
 ## Instructions
 * Max Score 20
 * Deadline is 11:59PM, Nov 4th, Saturday.
@@ -21,7 +22,7 @@ Write the **GroupOfCards** next. The constructor’s parameter should establish 
 The **Deck** class’s constructor is already provided in the text. To shuffle the deck, use a *for* loop that starts with *unshuffled* = *getCurrentSize* and steps down to one. In each iteration, use **Math.random** to pick an index in the unshuffled range, remove the card at that index, and then add it to the high end of the array. To deal a card, just remove the card at index = 0.  
 
 **Trick** class:  
-The **Trick** class is the next easiest one to write. The constructor’s parameter is the number of players, and the constructor calls the superclass’s constructor with one less than twice this number, to allow room in the first trick for undelt cards. The four *get*- methods are trivial. The **isWinner** method should return *true* unless the previous winning card is not *null* and the current card is not in the suit being played or its number is less than the winning card’s number. In the **update** method, if the current card is the winner, set winner equal to current player’s number and set the winning card equal to the current card. If the current card is a heart, set *hearts* to *true*. If the current card is the queen of spades, set *queen* to true.  
+The **Trick** class is the next easiest one to write. The constructor’s parameter is the number of players, and the constructor calls the superclass’s constructor with one less than twice this number, to allow room in the first trick for undelt cards. The four *get*- methods are trivial. The **isWinner** method should return *true* unless the previous winning card is not *null* and the current card is not in the suit being played or its number is less than the winning card’s number. In the **update** method, if the current card is the winner, set winner equal to current player’s number and set the winning card equal to the current card. <u>If the current card is a heart, set *hearts* to *true*. If the current card is the queen of spades, set *queen* to true.</u>  
 
 **Hand** class:
 The **Hand** class is the most difficult one to write, because it includes many of the rules and the strategy for playing the game. Since each player’s identification should remain constant after that player has been instantiated, make NUM a final instance variable, and initialize it in the *Hand* constructor with a value equal to the constructor’s first parameter value. The second parameter is the maximum number of cards the player will receive. Use it for the base-constructor call argument.  
@@ -30,7 +31,7 @@ Use a selection sort strategy for the **sort** method. Start with **unsorted** =
 
 Use the **setShortest** method to determine the best suit to play early in the game, to establish a void as quickly as possible. Start with *shortest* = clubs. If the number of diamonds is less than or equal to the number of clubs, change *shortest* to diamonds. If the number of spades is less than or equal to the shorter of those two, and your spades do not include Ace, King, or Queen, change *shortest* to spades. (Use the **find** method to see if you have an Ace, King, or Queen.)  
 
-The **getShortest** method is trivial.  
+The **getShortest** method is trivial.  <u>why it returns void</u>
 
 The **playACard** method is the most difficult one, because it contains many of the rules and all of the strategy for winning. We do not know the best way to write this method, because we are not perfect hearts players ourselves, so this is just a suggestion that works reasonably well. All of the methods listed after this one (except for the *count* method) are intended to be used by this method to make this method as simple as possible. Look at them before trying to write this method.  
 
@@ -43,7 +44,6 @@ Next, deal with cases where you are the last hand and there are no bad cards in 
 else if ((trick.getCurrentSize() == game.PLAYERS - 1)
   && !trick.getHearts() && !trick.getQueen()
   && (index = findLastHigh(suit)) >= 0);
-
 ```
 
 
@@ -52,7 +52,6 @@ Then, see what to do if you are a middle hand or the last hand with bad cards al
 ```java
 else if ((index = findHighestBelow(winningCard)) >= 0);
 else if ((index = findMiddleHigh(game, suit)) >= 0);
-
 ```
 
 Then, see what to do if you are void, and able to discard a bad card or your own:
@@ -94,7 +93,7 @@ The **Game** class is long but straightforward. Since the number of players shou
 
 The **getNumberOfTricks**, **getHearts**, and **getQueenOfSpades** methods are trivial.  
 
-Begin the **playAGame** method by shuffling the deck. Evaluate **cardsLeft** after all players get an equal number of cards (example: with five players *cardsLeft* = 2). Loop through all tricks and add one dealt card to each player in succession. Loop through all players and for each player call *sort* the **setShortest** to sort the hand and find that player’s best void opportunity. For that player, print the value of **shortest** and display that player’s hand to get an output like this (**Math.random** will make the values vary from one execution to the next):  
+Begin the **playAGame** method by shuffling the deck. Evaluate **cardsLeft** after all players get an equal number of cards (example: with five players *cardsLeft* = 2). Loop through all tricks and add one dealt card to each player in succession. Loop through all players and for each player call *sort* the **setShortest** to sort the hand and find that player’s best void opportunity. For that player, print the value of **shortest** and <u>display that player’s hand</u> to get an output like this (**Math.random** will make the values vary from one execution to the next):  
 
 ```java
 Output – first part:
@@ -159,7 +158,7 @@ King of clubs
 
 In this loop, also set **playerNum** equal to the identification number of the player having the lowest club.  
 
-Then loop through the total number of tricks. In each iteration, instantiate a new *Trick*, add it to the *tricks* array, and increment **numberOfTricks**. If it’s the first trick, set **index** equal to the index of the lowest club in the hand of the player having the lowest club, and set **card** equal to a reference to that card. Have that player remove that card, and update the trick. If it’s not the first trick, set **card** equal to the value returned by **player.playACard**. Display the player number and card value for this first play of the trick. Then loop through all remaining players, and for each such player, increment the player number, using % PLAYERS to count in a circle, assign the value returned by **playACard** to **card**, and display the player number and card value. After the loop through the remaining players is over, set the player number to the winner of the trick. Then, if it’s the first trick, deal the rest of the deck’s cards to this trick. For each such card, call **updateHeartsAndQueen** to record Hearts broken for the game, print “undelt card” and display that card.  
+Then loop through the total number of tricks. In each iteration, instantiate a new *Trick*, add it to the *tricks* array, and increment **numberOfTricks**. If it’s the first trick, set **index** equal to the index of the lowest club in the hand of the player having the lowest club, and set **card** equal to a reference to that card. Have that player remove that card, and update the trick. <u>If it’s not the first trick, set **card** equal to the value returned by **player.playACard**.</u> Display the player number and card value for this first play of the trick. Then loop through all remaining players, and for each such player, increment the player number, using % PLAYERS to count in a circle, assign the value returned by **playACard** to **card**, and display the player number and card value. After the loop through the remaining players is over, set the player number to the winner of the trick. Then, if it’s the first trick, deal the rest of the deck’s cards to this trick. For each such card, call **updateHeartsAndQueen** to record Hearts broken for the game, print “undelt card” and display that card.  
 
 After all the tricks are done, print each player’s number and score, using a call to **computePoints**. Recognizing again that **Math.random** will make the details of each execution different, the rest of the output for a game should look like this:  
 
@@ -244,6 +243,18 @@ In the **computePoints** method, loop through all tricks. If a particular trick�
 Here's the sample [game](https://cardgames.io/hearts/) you can try and get an idea of gameplay.  
 
                                       ****ALL THE BEST FOR MID TERM****
+---
+
+# Achievements
+
+
+
+
+
+# References
+
+http://www.bicyclecards.com/how-to-play/hearts/
+
 
 
 
