@@ -61,6 +61,22 @@ public class Hand extends GroupOfCards {
     else return -1;
   }
   
+  /**
+   * Find the lowest in the current suit.
+   * @param suit
+   * @return the lowest card of the input suit in hand
+   */
+  public int findLowest(Suit suit){
+    Optional<Card> lowest=this.getSuitList(suit).stream().min(Comparator.comparing(Card::getNum));
+    if(lowest!=null) return this.cards.indexOf(lowest);
+    else return -1;
+  }
+  
+  private Card findLowest(){
+    return this.cards.stream().min(Comparator.comparing(Card::getNum)).orElse(null);
+  }
+  
+  
 //  private int findLowest(Game game){
 //    
 //  }
@@ -118,7 +134,9 @@ public class Hand extends GroupOfCards {
   }
   
   public Card playACard(Game game, Trick trick){
+    int card=this.getShortest()>=0?this.findHighest(Suit.values()[this.getShortest()]):0;//
     
+    return null;
   }
   
   public String toString(){
