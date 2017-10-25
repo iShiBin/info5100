@@ -1,10 +1,13 @@
 package hearts;
 
+import java.util.Comparator;
+
 public class Card implements Comparable<Card>{
   private int num;
   private Suit suit;
   public static final Card QUEEN_OF_SPADES=new Card(12,Suit.Spade);
   public static final Card TWO_OF_CLUB=new Card(2,Suit.Club);
+  public static final Comparator<Card> COMPARATOR_NUM=Comparator.comparing(Card::getNum);
   
   public Card(int num, Suit suit){
     this.num=num;
@@ -35,30 +38,41 @@ public class Card implements Comparable<Card>{
     return suit.toString()+cardString;
   }
   
-  public boolean hasSameSuit(Card c){
-    return suit.equals(c.suit);
+  public boolean hasSameSuit(Card card){
+    return suit.equals(card.suit);
   }
   
-  public boolean hasSameSuit(Suit s){
-    return this.suit.equals(s);
+  public boolean hasSameSuit(Suit suit){
+    return this.suit.equals(suit);
   }
 
+  //todo: do i need to implement the compareto(Object o)
   @Override
-  public int compareTo(Card c) {
-    return num-c.num;
+  public int compareTo(Card card) {
+    assert this.hasSameSuit(card);
+    return this.num-card.num;
+  }
+  
+  public boolean isBiggerThan(Card card){
+    assert this.hasSameSuit(card);
+    return this.compareTo(card)>0;
+  }
+  
+  public boolean isSmallerThan(Card card){
+    return !isBiggerThan(card);
   }
   
   //todo which equals() will work in runtime?
-  public boolean equals(Card c){
-    return this.num==c.num && this.hasSameSuit(c);
+  public boolean equals(Card card){
+    return this.num==card.num && this.hasSameSuit(card);
   }
   
   @Override
-  public boolean equals(Object o){
-    if(this==o) return true;
-    if(o==null || !o.getClass().equals("Card")) return false;
+  public boolean equals(Object object){
+    if(this==object) return true;
+    if(object==null || !object.getClass().equals("Card")) return false;
     
-    Suit s=(Suit)o;
+    Suit s=(Suit)object;
     return this.toString().equals(s.toString());
   }
   

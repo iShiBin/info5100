@@ -58,11 +58,12 @@ public class Game {
       this.tricks.set(numberOfTricks, new Trick(this.PLAYERS));
       
       if(this.numberOfTricks==0){
-        int index=this.players.get(playerNum).cards.indexOf(Card.TWO_OF_CLUB);
-        Card card=Card.TWO_OF_CLUB;
-        this.players.get(playerNum).cards.remove(index);
+        this.tricks.get(numberOfTricks).addCard(Card.TWO_OF_CLUB);
+        this.players.get(playerNum).cards.remove(Card.TWO_OF_CLUB);
       }else{
-        
+        //todo
+        int winnerOfLastTrick=this.tricks.get(numberOfTricks-1).getWinner();
+        this.players.get(winnerOfLastTrick).playACard(this, this.tricks.get(numberOfTricks));
       }
       
       this.numberOfTricks++;

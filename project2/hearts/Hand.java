@@ -1,11 +1,11 @@
 package hearts;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class Hand extends GroupOfCards {
   public final int NUM;
-  private int shortest=0;
+  private Suit shortest=Suit.Club;
   
   public Hand(int playerNum, int numberOfCards){
     super(numberOfCards);
@@ -16,11 +16,22 @@ public class Hand extends GroupOfCards {
     this.cards.sort((c1,c2)->13*c2.getSuit().ordinal()+c2.getNum() - 13*c1.getSuit().ordinal()+c1.getNum());
   }
   
-  public void setShortest(){
+  public void setShortest() {
+    long clubCounter = this.count(Suit.Club);
+    long diamondCounter = this.count(Suit.Diamond);
+
+    if (diamondCounter <= clubCounter)
+      this.shortest = Suit.Diamond;
     
+//    judge whether this hand has a card of Ace, King, or Queen in spade
+    boolean hasBigSpade = this.suitStream(Suit.Spade).filter(card->card.compareTo(Card.QUEEN_OF_SPADES)>=0).count()>0;
+    if(!hasBigSpade){
+      long spadeCounter = this.suitStream(Suit.Spade).count();
+      if(spadeCounter<Math.min(clubCounter, clubCounter)) this.shortest=Suit.Spade;
+    }
   }
   
-  public int getShortest(){
+  public Suit getShortest(){
     return this.shortest;
   }
   
@@ -28,22 +39,19 @@ public class Hand extends GroupOfCards {
 //    
 //  }
   
-  private int count(Suit suit){
-    return this.getSuitList(suit).size();
+  private long count(Suit suit){
+    return this.suitStream(suit).count();
   }
   
-  //to test the index method of constructing a new card
-  private int find(int num, Suit suit){
-    for(int i=0;i<this.cards.size();i++){
-      if(cards.get(i).getNum()==num && cards.get(i).getSuit().equals(suit))
-        return i;
-    }
-    return -1;
-  }
-  
-  //todo: test the hashCode function
-  private int find(Card card){
-    return this.cards.indexOf(card);
+  /**
+   * Find whether a card with specified suit and number existed in current hand.
+   * @param num
+   * @param suit
+   * @return True if found; False if not found.
+   */
+  private boolean find(int num, Suit suit){
+    Card target=new Card(num, suit);
+    return this.cards.contains(target);
   }
   
   /**
@@ -55,10 +63,12 @@ public class Hand extends GroupOfCards {
    * @return Return the index of the card having the highest numerical value in the suit indicated by the parameter value.
    * If you have no cards in the suit, return -1.
    */
-  private int findHighest(Suit suit){
-    Optional<Card> highest=this.getSuitList(suit).stream().max(Comparator.comparing(Card::getNum));
-    if(highest!=null) return this.cards.indexOf(highest);
-    else return -1;
+  private Card findHighest(Suit suit){
+    return this.suitStream(suit).max(Card.COMPARATOR_NUM).orElse(null);
+  }
+  
+  private Card findHighest(){
+    return this.cards.stream().max(Card.COMPARATOR_NUM).orElse(null);
   }
   
   /**
@@ -66,14 +76,12 @@ public class Hand extends GroupOfCards {
    * @param suit
    * @return the lowest card of the input suit in hand
    */
-  public int findLowest(Suit suit){
-    Optional<Card> lowest=this.getSuitList(suit).stream().min(Comparator.comparing(Card::getNum));
-    if(lowest!=null) return this.cards.indexOf(lowest);
-    else return -1;
+  public Card findLowest(Suit suit){
+    return this.suitStream(suit).min(Card.COMPARATOR_NUM).orElse(null);
   }
   
   private Card findLowest(){
-    return this.cards.stream().min(Comparator.comparing(Card::getNum)).orElse(null);
+    return this.cards.stream().min(Card.COMPARATOR_NUM).orElse(null);
   }
   
   
@@ -84,18 +92,18 @@ public class Hand extends GroupOfCards {
   /**
    * @param suit
    * @return the highest card in the suit led when there are no bad cards in the trick.
-   * If this card is the queen of spades, however, and you have another spade, return the highest card you have below your queen.  
+   * If this card is the queen of spades, however, and you have another spade, return the highest card you have below your queen.
+   * @todo: what if I don't have other spades?
    */
-  private int findLastHigh(Suit suit){
-    Card lastHigh=this.cards.get(this.findHighest(suit));
+  private Card findLastHigh(Suit suit){
+    Card lastHigh=this.findHighest(suit);
     if(lastHigh.equals(Card.QUEEN_OF_SPADES)){
-      List<Card> cardList=this.getSuitList(suit).stream().filter(card->!card.equals(Card.QUEEN_OF_SPADES)).collect(Collectors.toList());
+      List<Card> cardList=this.suitStream(suit).filter(card->!card.equals(Card.QUEEN_OF_SPADES)).collect(Collectors.toList());
       if(cardList.size()>1){
-        Optional<Card> anotherLastHigh=cardList.stream().max(Comparator.comparing(Card::getNum));
-        return this.cards.indexOf(anotherLastHigh);
+        return cardList.stream().max(Card.COMPARATOR_NUM).orElse(null);
       }
     }
-    return this.cards.indexOf(lastHigh);
+    return lastHigh;
   }
   
   /**
@@ -103,17 +111,10 @@ public class Hand extends GroupOfCards {
    * @param winningCard
    * Given a reference to the current winning card as the parameter value, search through the cards in your hand whose suit equals the winning card’s suit
    * until you find the <b>first one</b> having a number less than the winning card’s number
-   * @return the index of that card, but if the <b>next card is a different suit</b>, terminate the search, and return -1. //todo
+   * @return the index of that card, but if the <b>next card is a different suit</b>, terminate the search, and return null. //todo
    */
-  private int findHighestBelow(Card winningCard){
-    List<Card> list=this.getSuitList(winningCard.getSuit());
-    if(list!=null || list.isEmpty()) return -1;
-    else if (list.size()==1) return 0;
-    else{
-      Optional <Card> c=this.getSuitList(winningCard.getSuit()).stream().filter(card->card.getNum()<winningCard.getNum()).max(Comparator.comparing(Card::getNum));
-      if(c==null) c=this.getSuitList(winningCard.getSuit()).stream().filter(card->card.getNum()>winningCard.getNum()).max(Comparator.comparing(Card::getNum));
-      return this.cards.indexOf(c);
-    }
+  private Card findHighestBelow(Card winningCard){
+    return this.suitStream(winningCard).filter(card->card.getNum()<winningCard.getNum()).max(Card.COMPARATOR_NUM).orElse(null);
   }
   
   /**
@@ -122,21 +123,84 @@ public class Hand extends GroupOfCards {
    * @return a list of cards in my hand having the same suite as the input parameter suit;
    * null if such list does not exist
    */
-  private List<Card> getSuitList(Suit suit){
-    List<Card> list=this.cards.stream().filter(card->card.hasSameSuit(suit)).collect(Collectors.toList());
-    return list;
+  private Stream<Card> suitStream(Suit suit){
+    return this.cards.stream().filter(card->card.hasSameSuit(suit));
   }
   
-  //todo
-  private int findMiddleHigh(Game game, Suit suit){
+  //explain
+  private Stream<Card> suitStream(Card card){
+    return this.suitStream(card.getSuit());
+  }
+  
+  private Card findMiddleHigh(Game game, Suit suit){
+    Card card=this.findHighest(suit);
     
-    return -1;
+    if(suit.equals(Suit.Spade)) {
+      boolean isQueenOfSpadesPlayes=game.getQueenOfSpades();
+      if(!isQueenOfSpadesPlayes){
+        card=this.findHighestBelow(Card.QUEEN_OF_SPADES);
+      }
+    }
+    return card;
+  }
+  
+  private Card findLowestAbove(Card card){
+    return this.suitStream(card).filter(c->c.isBiggerThan(card)).min(Card.COMPARATOR_NUM).orElse(null);
   }
   
   public Card playACard(Game game, Trick trick){
-    int card=this.getShortest()>=0?this.findHighest(Suit.values()[this.getShortest()]):0;//
+    Card card=null;
     
-    return null;
+    if(trick.getCurrentSize()==0){
+      card=this.firstHand(game, trick);
+    }else if(trick.getCurrentSize()==game.PLAYERS-1){
+      card=this.lastHand(game, trick);
+    }else{
+      card=this.middleHand(game, trick);
+    }
+    this.cards.remove(card);
+    return card;
+  }
+  
+  private Card firstHand(Game game, Trick trick){
+    Card card=this.findHighest(shortest);
+    if(card==null) card=this.findLowest();
+    return card;
+  }
+  
+  private Card lastHand(Game game, Trick trick){
+    boolean isRisky=trick.isHearts() || trick.isQueen();
+    if(!isRisky) return this.findHighest(trick.getCard(0).getSuit());
+    else{
+      Card candidate=this.findHighestBelow(trick.getWinningCard());
+      return candidate!=null?candidate:this.findHighest(trick.getWinningCard().getSuit());
+    }
+  }
+  
+  /**
+   * choose the 
+   * @param game
+   * @param trick
+   * @return
+   */
+  private Card middleHand(Game game, Trick trick){
+    if(this.suitStream(trick.getWinningCard()).count()!=0){
+      Card candidate=this.findHighestBelow(trick.getWinningCard());
+      return candidate!=null?candidate:this.findLowest(trick.getWinningCard().getSuit());
+    }else{
+      return this.getVoidCard(game, trick);
+    }
+  }
+  
+  /**
+   * 
+   * @param game
+   * @param trick
+   * @return
+   */
+  private Card getVoidCard(Game game, Trick trick){
+    Card candidate=this.findHighest(this.getShortest());
+    return candidate==null?this.findHighest():candidate;
   }
   
   public String toString(){
