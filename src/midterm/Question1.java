@@ -1,3 +1,4 @@
+// score 6
 /**
  * Write a method named reverseEvenIndices that takes an integer array as input and outputs an array
  * such that all the values with odd indices remain in the same position.
