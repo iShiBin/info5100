@@ -1,4 +1,4 @@
-// score 10
+// score 5
 /**
 Given n dice each with m faces, numbered from 1 to m, find the number of ways to get sum X.
 X is the summation of values on each face when all the dice are thrown.
@@ -10,6 +10,13 @@ package midterm;
 
 public class Question4 {
 
+  /* 
+  for input (6,2,10) 
+  expected out is 3, if you haven't considered duplicates it should be 2.
+  your output: 1
+  outcomes for sum = 10 are: [4,6],[5,5],[6,4].
+  */
+   
   
   /**
    * Algorithm: reduce the problem scale and use recursion. Here is the base cases:
