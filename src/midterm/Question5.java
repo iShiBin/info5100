@@ -1,4 +1,4 @@
-// extra credit 10
+// extra credit 5
 /**
 Extra Credit
 A Maze is given as N*N binary matrix of blocks where source block is the upper left most block
@@ -46,6 +46,17 @@ class Cell {
  * 
  * Otherwise, try to move the mouse 1 step forward or 1 step down
  */
+
+/*
+
+for input = {{1,0,0,1,0},
+             {1,1,1,1,1},
+             {1,0,0,1,0},
+             {1,1,0,1,1}};
+             
+   expected output: [[0, 0], [1, 0], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [3, 4]]
+   your output    : [[0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [3, 4]]
+*/
 class Question5 {
   public ArrayList<Cell> findPath(int[][] maze) {
     if(maze==null || maze.length==0 || maze[0][0]==0) return new ArrayList<Cell>();
