@@ -1,4 +1,4 @@
-# Project 2
+# Project 2: Game of Hearts
 
 ## Instructions
 * Max Score 20
