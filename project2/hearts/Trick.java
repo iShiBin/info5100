@@ -7,8 +7,13 @@ public class Trick extends GroupOfCards {
   private boolean queen=false;
   
   public Trick(int players){
-    super(players*2-1);
+    super(players);
+//    super(players*2-1);
   }
+  
+  protected Trick(){
+    super();
+  };
   
   public int getWinner(){
     return this.winner;
@@ -26,6 +31,14 @@ public class Trick extends GroupOfCards {
     return queen;
   }
 
+  /**
+   * If the current card is the winner, 
+   * set winner equal to current player’s number and set the winning card equal to the current card. 
+   * If the current card is a heart, set hearts to true. 
+   * If the current card is the queen of spades, set queen to true.
+   * @param playerNum
+   * @param card
+   */
   public void update(int playerNum, Card card){
     if(isWinner(card)){
       this.winner=playerNum;
@@ -33,6 +46,15 @@ public class Trick extends GroupOfCards {
     }
     if(card.getSuit().equals(Suit.Heart)) this.hearts=true;
     if(card.equals(Card.QUEEN_OF_SPADES)) this.queen=true;
+  }
+  
+  public int getPoints(){
+    int points=0;
+    for(Card c:this.getCards()){
+      if(c.equals(Card.QUEEN_OF_SPADES)) points+=13;
+      else if(c.hasSameSuit(Suit.Heart)) points++;
+    }
+    return points;
   }
   
   /**
@@ -43,11 +65,15 @@ public class Trick extends GroupOfCards {
    * - or its number is less than the winning card’s number.
    */
   public boolean isWinner(Card card){
-    Card firstCard=this.cards.get(0);
-    if(!card.hasSameSuit(firstCard)){
-      return false;
-    }else if(card.compareTo(firstCard)<0){
-      return false;
-    }else return true;
+    if(this.winningCard!=null && !this.getCards().isEmpty()){
+      if(!card.hasSameSuit(winningCard) || card.isSmallerThan(winningCard))
+        return false;
+    }
+    return true;
+  }
+  
+  @Override
+  public String toString() {
+    return "winner " + winner + " " + this.winningCard + super.getCards();
   }
 }

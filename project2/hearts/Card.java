@@ -1,3 +1,10 @@
+/**
+ * Represent numbers and face-card values by integers ranging from 2 to 14, with 14 being the ace. 
+ * Represent suits by integers as follows: 0 = clubs; 1 = diamonds; 2 = hearts; 3 = spades. 
+ * Write a nice display method that uses switch statements to convert suit integers to the words, “clubs,” “diamonds,” and so on, 
+ * and the numbers 11…14 to the words “Jack,” “Queen,” and so on. Use the display method to test this class.
+ */
+
 package hearts;
 
 import java.util.Comparator;
@@ -18,9 +25,10 @@ public class Card implements Comparable<Card>{
   public Suit getSuit() {return suit;}
   
   public void display(){
-    System.out.println(this);
+    System.out.println(this.toString());
   }
   
+  @Override
   public String toString(){
     String cardString = new String();
     if(num>=2 && num<=10){
@@ -46,7 +54,6 @@ public class Card implements Comparable<Card>{
     return this.suit.equals(suit);
   }
 
-  //todo: do i need to implement the compareto(Object o)
   @Override
   public int compareTo(Card card) {
     assert this.hasSameSuit(card);
@@ -62,22 +69,17 @@ public class Card implements Comparable<Card>{
     return !isBiggerThan(card);
   }
   
-  //todo which equals() will work in runtime?
-  public boolean equals(Card card){
-    return this.num==card.num && this.hasSameSuit(card);
-  }
-  
+  /**
+   * To support list.remove(card)
+   */
   @Override
-  public boolean equals(Object object){
-    if(this==object) return true;
-    if(object==null || !object.getClass().equals("Card")) return false;
-    
-    Suit s=(Suit)object;
-    return this.toString().equals(s.toString());
-  }
-  
-  @Override
-  public int hashCode(){
-    return this.toString().hashCode();
+  public boolean equals(Object object) {
+    if (this == object)
+      return true;
+    if (object == null || !object.getClass().getName().equals(this.getClass().getName()))
+      return false;
+
+    Card card = (Card) object;
+    return this.hasSameSuit(card) && this.compareTo(card) == 0;
   }
 }
