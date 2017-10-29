@@ -298,7 +298,7 @@ Here is the test code with output inline as comments.
     System.out.println(new SpiralMatrix().spiralOrder(matrix));
     // [1, 2, 3, 6, 9, 8, 7, 4, 5]
 
-    matrix = new int[][] {{1,2,3,10}, {4,5,6,11}, {7,8,9,12}, {14,15,16,17}};
+    matrix = new int[][] { {1,2,3,10}, {4,5,6,11}, {7,8,9,12}, {14,15,16,17} };
     System.out.println(new SpiralMatrix().spiralOrder(matrix));
     // [1, 2, 3, 10, 11, 12, 17, 16, 15, 14, 7, 4, 5, 6, 9, 8]
   }
