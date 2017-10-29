@@ -16,7 +16,7 @@ Date: 2017-09-20
   | int     | 32               | 2,147,483,648 ~ -2147483647 (2b) |
   | long    | 64               | -huge - huge (2^63 ~ 2^63-1)     |
   | float   | 32               | varies (causion to use)          |
-  | double  | 64               | varies(causion to use)           |
+  | double  | 64               | varies (causion to use)          |
 
 * Four Concepts: 
   Encapsulation - **used to hide the values or state of a structured data object inside a class**, preventing unauthorized parties' direct access to them.
@@ -25,9 +25,9 @@ Date: 2017-09-20
   Inheritance - 
   Polymorphism - 
 
-* Instance variables always get adefault value. Ifyou don’t explicitly assign a value
+* Instance variables always get adefault value. If you don’t explicitly assign a value
 
-  to an instance variable, or youdon’t call a setter method, the instance variable still has a value!
+  to an instance variable, or you don’t call a setter method, the instance variable still has a value! However, the only the local reference varaibles get a default value.
 
   integers **0**
 
