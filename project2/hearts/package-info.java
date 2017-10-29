@@ -1,6 +1,5 @@
 /**
- * Game of Hearts
- * <link> https://en.wikipedia.org/wiki/Hearts
+ * Game of Hearts https://en.wikipedia.org/wiki/Hearts
  * @author bin
  *
  */

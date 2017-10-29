@@ -22,7 +22,7 @@ Write the **GroupOfCards** next. The constructor’s parameter should establish 
 The **Deck** class’s constructor is already provided in the text. To shuffle the deck, use a *for* loop that starts with *unshuffled* = *getCurrentSize* and steps down to one. In each iteration, use **Math.random** to pick an index in the unshuffled range, remove the card at that index, and then add it to the high end of the array. To deal a card, just remove the card at index = 0.  
 
 **Trick** class:  
-The **Trick** class is the next easiest one to write. The constructor’s parameter is the number of players, and the constructor calls the superclass’s constructor with one less than twice this number, to allow room in the first trick for undelt cards. The four *get*- methods are trivial. The **isWinner** method should return *true* unless the previous winning card is not *null* and the current card is not in the suit being played or its number is less than the winning card’s number. In the **update** method, if the current card is the winner, set winner equal to current player’s number and set the winning card equal to the current card. <u>If the current card is a heart, set *hearts* to *true*. If the current card is the queen of spades, set *queen* to true.</u>  
+The **Trick** class is the next easiest one to write. The constructor’s parameter is the number of players, and the constructor calls the superclass’s constructor with one less than twice this number, to allow room in the first trick for undelt cards. The four *get*- methods are trivial. The **isWinner** method should return *true* unless the previous winning card is not *null* and the current card is not in the suit being played or its number is less than the winning card’s number. In the **update** method, if the current card is the winner, set winner equal to current player’s number and set the winning card equal to the current card. If the current card is a heart, set *hearts* to *true*. If the current card is the queen of spades, set *queen* to true.  
 
 **Hand** class:
 The **Hand** class is the most difficult one to write, because it includes many of the rules and the strategy for playing the game. Since each player’s identification should remain constant after that player has been instantiated, make NUM a final instance variable, and initialize it in the *Hand* constructor with a value equal to the constructor’s first parameter value. The second parameter is the maximum number of cards the player will receive. Use it for the base-constructor call argument.  
@@ -31,7 +31,7 @@ Use a selection sort strategy for the **sort** method. Start with **unsorted** =
 
 Use the **setShortest** method to determine the best suit to play early in the game, to establish a void as quickly as possible. Start with *shortest* = clubs. If the number of diamonds is less than or equal to the number of clubs, change *shortest* to diamonds. If the number of spades is less than or equal to the shorter of those two, and your spades do not include Ace, King, or Queen, change *shortest* to spades. (Use the **find** method to see if you have an Ace, King, or Queen.)  
 
-The **getShortest** method is trivial.  <u>why it returns void</u>
+The **getShortest** method is trivial. 
 
 The **playACard** method is the most difficult one, because it contains many of the rules and all of the strategy for winning. We do not know the best way to write this method, because we are not perfect hearts players ourselves, so this is just a suggestion that works reasonably well. All of the methods listed after this one (except for the *count* method) are intended to be used by this method to make this method as simple as possible. Look at them before trying to write this method.  
 
@@ -89,7 +89,7 @@ Use the **findMiddleHigh** method if the findHighestBelow method returned -1. Us
 Assuming you cannot follow suit and you no longer have the Queen, Ace, or King of spades and no longer have any hearts, use the **findHighest()** method to discard the highest remaining card in your hand, regardless of suit.  
 
 **Game** class:  
-The **Game** class is long but straightforward. Since the number of players should remain constant after a game has been instantiated, make PLAYERS a final instance variable, and initialize it in the *Game* constructor with a value equal to the constructor’s parameter value. This constructor should instantiate a *Hand* array with constructor parameter equal to the number of players. It should instantiate individual *Hand* objects for each player, with player identification number and maximum number of cards in a player’s hand as constructor arguments. It should also instantiate a *Trick* array with total number of tricks as the constructor argument, but it should not populate this array with any individual tricks.  
+The **Game** class is long but straightforward. 
 
 The **getNumberOfTricks**, **getHearts**, and **getQueenOfSpades** methods are trivial.  
 
@@ -153,7 +153,6 @@ Jack of diamonds
 King of clubs
 9 of clubs
 2 of clubs
-
 ```
 
 In this loop, also set **playerNum** equal to the identification number of the player having the lowest club.  
@@ -233,7 +232,6 @@ Player 2 score= 0
 Player 3 score= 3
 Player 4 score= 14
 Play another game (y/n)?
-
 ```
 
 In the **updateHeartsAndQueen** method, if the parameter card’s suit is hearts and **hearts** is still **false**, output “Hearts is now broken” and set **hearts** to **true**. If the parameter card is the queen of spades set **queenOfSpades** to **true**.  
@@ -247,9 +245,198 @@ Here's the sample [game](https://cardgames.io/hearts/) you can try and get an id
 
 # Achievements
 
+I've generated the java docs for the refrence /doc/hearts starting with package-summary.html
+
+Here is some main points which could be slightly different with the specification.
+
+* Use list instread of array for `card` in class GroupOfCards.  The benifits are:
+  * easy to sort by ultilizing list.sort()
+  * easy to shuffle by ultiilzing collections.shuffle()
+  * easy to operation using new stream features in Java 8
+* Override the equals(Object object) in class `Card` to support remove a card instance from the list.
+* Pass card reference instead of the index of array to make the program shorter and more beautiful.
+* Use enum `Suit` rather than `int` to control the safety of type.
+* Create a new class `GameException` to constomize the a rumtime exception for `card`
+
+# Verification
+
+Here is a sample running result with 5 players with DEBUG off.
+
+```
+How many players?
+5
+undelt cards: [♢A, ♧2]
+
+player 0 shortest=♢[♤A, ♤K, ♤10, ♤7, ♤5, ♡K, ♡Q, ♡3, ♢2, ♧8]
+player 1 shortest=♢[♤Q, ♤J, ♤8, ♤3, ♡J, ♡6, ♡4, ♧K, ♧Q, ♧9]
+player 2 shortest=♤[♤6, ♡A, ♡10, ♡9, ♡5, ♢K, ♢9, ♧J, ♧5, ♧3]
+player 3 shortest=♤[♤9, ♡2, ♢8, ♢7, ♢6, ♢5, ♢3, ♧7, ♧6, ♧4]
+player 4 shortest=♧[♤4, ♤2, ♡8, ♡7, ♢Q, ♢J, ♢10, ♢4, ♧A, ♧10]
+
+player 0 ♧2
+player 1 ♧9
+player 2 ♧5
+player 3 ♧7
+player 4 ♧A
+
+player 4 ♧10
+player 0 ♧8
+player 1 ♧Q
+player 2 ♧J
+player 3 ♧6
+
+player 1 ♤3
+player 2 ♤6
+player 3 ♤9
+player 4 ♤4
+player 0 ♤A
+
+player 0 ♢2
+player 1 ♧K
+player 2 ♢9
+player 3 ♢8
+player 4 ♢Q
+
+player 4 ♤2
+player 0 ♤5
+player 1 ♤8
+player 2 ♡A
+hearts is now broken...
+player 3 ♢7
+
+player 1 ♡4
+player 2 ♡5
+player 3 ♡2
+player 4 ♡7
+player 0 ♡3
+
+player 4 ♢4
+player 0 ♤K
+player 1 ♤Q
+player 2 ♢K
+player 3 ♢6
+
+player 2 ♧3
+player 3 ♧4
+player 4 ♢J
+player 0 ♡K
+player 1 ♤J
+
+player 3 ♢3
+player 4 ♢10
+player 0 ♡Q
+player 1 ♡J
+player 2 ♡10
+
+player 4 ♡8
+player 0 ♤10
+player 1 ♡6
+player 2 ♡9
+player 3 ♢5
+
+Player 0 score= 0
+Player 1 score= 1
+Player 2 score= 16
+Player 3 score= 1
+Player 4 score= 8
+*****Game Over*****
+Do you want to play again(Y/N)?
+
+```
+
+If DEBUG is on, the cards in a hand will be printed after the player palys a card like below.
+
+```
+undelt cards: [♧9, ♤10]
+
+player 0 shortest=♢[♤4, ♤2, ♡J, ♡10, ♡7, ♡5, ♡4, ♢K, ♧5, ♧2]
+player 1 shortest=♧[♤J, ♤9, ♡K, ♡9, ♡8, ♡6, ♢7, ♢4, ♢2, ♧Q]
+player 2 shortest=♤[♤8, ♤7, ♤6, ♡3, ♢8, ♢3, ♧A, ♧7, ♧6, ♧3]
+player 3 shortest=♧[♤A, ♤Q, ♤5, ♡Q, ♡2, ♢Q, ♢J, ♢5, ♧J, ♧10]
+player 4 shortest=♧[♤K, ♤3, ♡A, ♢A, ♢10, ♢9, ♢6, ♧K, ♧8, ♧4]
+
+player 0 ♧2[♤4, ♤2, ♡J, ♡10, ♡7, ♡5, ♡4, ♢K, ♧5, ♧2]
+player 1 ♧Q[♤J, ♤9, ♡K, ♡9, ♡8, ♡6, ♢7, ♢4, ♢2]
+player 2 ♧7[♤8, ♤7, ♤6, ♡3, ♢8, ♢3, ♧A, ♧6, ♧3]
+player 3 ♧J[♤A, ♤Q, ♤5, ♡Q, ♡2, ♢Q, ♢J, ♢5, ♧10]
+player 4 ♧K[♤K, ♤3, ♡A, ♢A, ♢10, ♢9, ♢6, ♧8, ♧4]
+winner 4 ♧K[♧2, ♧Q, ♧7, ♧J, ♧K]
+
+player 4 ♧8[♤K, ♤3, ♡A, ♢A, ♢10, ♢9, ♢6, ♧4]
+player 0 ♧5[♤4, ♤2, ♡J, ♡10, ♡7, ♡5, ♡4, ♢K]
+player 1 ♡K[♤J, ♤9, ♡9, ♡8, ♡6, ♢7, ♢4, ♢2]
+hearts is now broken...
+player 2 ♧6[♤8, ♤7, ♤6, ♡3, ♢8, ♢3, ♧A, ♧3]
+player 3 ♧10[♤A, ♤Q, ♤5, ♡Q, ♡2, ♢Q, ♢J, ♢5]
+winner 3 ♧10[♧8, ♧5, ♡K, ♧6, ♧10]
+
+player 3 ♡2[♤A, ♤Q, ♤5, ♡Q, ♢Q, ♢J, ♢5]
+player 4 ♡A[♤K, ♤3, ♢A, ♢10, ♢9, ♢6, ♧4]
+player 0 ♡J[♤4, ♤2, ♡10, ♡7, ♡5, ♡4, ♢K]
+player 1 ♡9[♤J, ♤9, ♡8, ♡6, ♢7, ♢4, ♢2]
+player 2 ♡3[♤8, ♤7, ♤6, ♢8, ♢3, ♧A, ♧3]
+winner 4 ♡A[♡2, ♡A, ♡J, ♡9, ♡3]
+
+player 4 ♧4[♤K, ♤3, ♢A, ♢10, ♢9, ♢6]
+player 0 ♢K[♤4, ♤2, ♡10, ♡7, ♡5, ♡4]
+player 1 ♤J[♤9, ♡8, ♡6, ♢7, ♢4, ♢2]
+player 2 ♧3[♤8, ♤7, ♤6, ♢8, ♢3, ♧A]
+player 3 ♤A[♤Q, ♤5, ♡Q, ♢Q, ♢J, ♢5]
+winner 4 ♧4[♧4, ♢K, ♤J, ♧3, ♤A]
+
+player 4 ♤3[♤K, ♢A, ♢10, ♢9, ♢6]
+player 0 ♤2[♤4, ♡10, ♡7, ♡5, ♡4]
+player 1 ♤9[♡8, ♡6, ♢7, ♢4, ♢2]
+player 2 ♤8[♤7, ♤6, ♢8, ♢3, ♧A]
+player 3 ♤Q[♤5, ♡Q, ♢Q, ♢J, ♢5]
+winner 3 ♤Q[♤3, ♤2, ♤9, ♤8, ♤Q]
+
+player 3 ♤5[♡Q, ♢Q, ♢J, ♢5]
+player 4 ♤K[♢A, ♢10, ♢9, ♢6]
+player 0 ♤4[♡10, ♡7, ♡5, ♡4]
+player 1 ♡8[♡6, ♢7, ♢4, ♢2]
+player 2 ♤7[♤6, ♢8, ♢3, ♧A]
+winner 4 ♤K[♤5, ♤K, ♤4, ♡8, ♤7]
+
+player 4 ♢6[♢A, ♢10, ♢9]
+player 0 ♡10[♡7, ♡5, ♡4]
+player 1 ♢4[♡6, ♢7, ♢2]
+player 2 ♢3[♤6, ♢8, ♧A]
+player 3 ♢5[♡Q, ♢Q, ♢J]
+winner 4 ♢6[♢6, ♡10, ♢4, ♢3, ♢5]
+
+player 4 ♢9[♢A, ♢10]
+player 0 ♡7[♡5, ♡4]
+player 1 ♢7[♡6, ♢2]
+player 2 ♢8[♤6, ♧A]
+player 3 ♢Q[♡Q, ♢J]
+winner 3 ♢Q[♢9, ♡7, ♢7, ♢8, ♢Q]
+
+player 3 ♢J[♡Q]
+player 4 ♢10[♢A]
+player 0 ♡5[♡4]
+player 1 ♢2[♡6]
+player 2 ♤6[♧A]
+winner 3 ♢J[♢J, ♢10, ♡5, ♢2, ♤6]
+
+player 3 ♡Q[]
+player 4 ♢A[]
+player 0 ♡4[]
+player 1 ♡6[]
+player 2 ♧A[]
+winner 3 ♡Q[♡Q, ♢A, ♡4, ♡6, ♧A]
+
+Player 0 score= 0
+Player 1 score= 0
+Player 2 score= 0
+Player 3 score= 19
+Player 4 score= 7
+*****GAME OVER*****
 
 
+```
 
+I've tested this program 10 times with debug with random number of players [1-52], and capture the output to a file named `sample.txt `in /doc/hearts.
 
 # References
 
