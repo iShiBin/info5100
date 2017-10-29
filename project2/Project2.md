@@ -245,7 +245,7 @@ Here's the sample [game](https://cardgames.io/hearts/) you can try and get an id
 
 # Achievements
 
-I've generated the java docs for the refrence /doc/hearts starting with package-summary.html
+I've generated the java docs for the refrence [/doc/hearts](info5100/doc/hearts/) starting with [package-tree.html](info5100/doc/hearts/package-tree.html)
 
 Here is some main points which could be slightly different with the specification.
 
