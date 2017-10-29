@@ -49,11 +49,11 @@ class Cell {
 
 /*
 
-for input = {{1,0,0,1,0},
-             {1,1,1,1,1},
-             {1,0,0,1,0},
-             {1,1,0,1,1},
-             {0,0,0,0,1}};
+for input = { {1,0,0,1,0},
+              {1,1,1,1,1},
+              {1,0,0,1,0},
+              {1,1,0,1,1},
+              {0,0,0,0,1} };
              
    expected output: [[0, 0], [1, 0], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [3, 4]], [4, 4]
    your output    : [[0, 0], [1, 0], [2, 0], [3, 0], [3, 1], [1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [3, 4], [4, 4]]
@@ -70,20 +70,28 @@ class Question5 {
   private boolean[][] isVisited;
   private boolean findPath(int[][] m, int x, int y, ArrayList<Cell> list) {
 
-    if (x > m.length - 1 || y > m[x].length - 1 || m[x][y] == 0 || isVisited[x][y])
+    if (x > m.length - 1 || y > m[x].length - 1 || m[x][y] == 0 || isVisited[x][y]){
       return false; // illegal cases or visited spots
+    }
 
     list.add(new Cell(x, y));
+    isVisited[x][y]=true;
     if (x == m.length - 1 && y == m[x].length - 1)
       return true; // reach to the destination
-
-    return findPath(m, x + 1, y, list) || findPath(m, x, y + 1, list);
-  }
+    
+    if(findPath(m, x + 1, y, list)) return true;
+    if(findPath(m, x, y + 1, list)) return true;
+    
+    list.remove(list.size()-1); //backtracking
+    return false;
+    }
+  
 
   public static void main(String[] args) {
-    int[][] m = { { 1, 0, 0, 0 }, { 1, 1, 1, 1 }, { 0, 1, 0, 0 }, { 1, 1, 1, 1 } };
+    int[][] m = { { 1, 0, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 0, 0, 1, 0 }, { 1, 1, 0, 1, 1 }, { 0, 0, 0, 0, 1 } };
     Question5 test=new Question5();
     System.out.println(test.findPath(m));
+    
   }
 
 }
