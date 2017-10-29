@@ -1,4 +1,4 @@
-# INFO5100: Application Engineering and Development
+# Application Engineering and Development
 
 INFO 5100 (required), Application Engineering and Development: Students will learn innovative software programming techniques that will enable them to properly design and build any kind of application quickly. 
 
@@ -9,11 +9,15 @@ This class was designed to meet the needs of engineering students with a limited
 Here is the tree of this repository.
 
 ```
-.
+├── LICENSE
 ├── README.md
 ├── assignments: actual work of assignments in markdown format.
+├── build
+├── data
+├── doc
 ├── head-first2
-├── notes: some class notes
+├── notes
 ├── project*: project like project1, project2... 
-└── src: java source code
+├── resource
+└── src: some java source code
 ```
