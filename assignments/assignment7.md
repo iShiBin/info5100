@@ -111,4 +111,4 @@ Here is the prototype you can work with
 
 # Accomplishments
 
-Please refer to Java source code with inline comments under [.\src\assignment7](.\src\assignment7)
+Please refer to Java source code with inline comments under [\src\assignment7](https://github.com/iShiBin/info5100/tree/master/src/assignment7)
