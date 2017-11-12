@@ -24,7 +24,7 @@ but you should structure your program such that the threads print their greeting
     public void startup() { ... } // print to console that device is starting
     public void shutdown() { ... } // print to console that device is shutting down and exit
   }
-```  
+```
 There are also two sensors, one for *heat* and one for *pressure*, which can be used to monitor the device.  
 
 ```java
@@ -42,9 +42,9 @@ There are also two sensors, one for *heat* and one for *pressure*, which can be 
       }
       public void run() { ... }
 }
-```  
+```
 
-Write a class **Controller** (extends Thread) that can poll the sensors concurrently to running the device. You should implement its run() method such that it starts the device and then monitors it by waiting for and examining any new sensor values. The controller shuts down the device if the heat sensor exceeds the value 70 or the pressure sensor the value 100. Also complete the run() method in the class *Sensor* which calls updateValue() continuously and signals the controller if its value has changed. You can print the heat and pressure value to console in the run() method of *Controller* to check.
+Write a class **Controller** (extends Thread) that can poll the sensors concurrently to the running device. You should implement its run() method such that it starts the device and then monitors it by waiting for and examining any new sensor values. The controller shuts down the device if the heat sensor exceeds the value 70 or the pressure sensor the value 100. Also complete the run() method in the class *Sensor* which calls updateValue() continuously and signals the controller if its value has changed. You can print the heat and pressure value to console in the run() method of *Controller* to check.
 
 Here is the Root class that starts the application.(score 4)
 
@@ -91,7 +91,7 @@ Here is the prototype you can work with
 
 **Extra Credit**  
 5. Determine whether a given array can be partitioned into two subsets such that the sum of elements in both subsets is same.(score 2) 
-Examples
+  Examples
 > arr[] = {1, 5, 11, 5}  
 > Output: true   
 > The array can be partitioned as {1, 5, 5} and {11}  
@@ -99,10 +99,16 @@ Examples
 > arr[] = {1, 5, 3}  
 > Output: false   
 > The array cannot be partitioned into equal sum sets.  
-Here is the prototype you can work with  
+> Here is the prototype you can work with  
 
 ```java
   public boolean findPartition (int arr[]) {
       //your code
   }
 ```
+
+---
+
+# Accomplishments
+
+Please refer to Java source code with inline comments under [.\src\assignment7](.\src\assignment7)
