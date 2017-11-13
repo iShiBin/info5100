@@ -2,7 +2,7 @@ package assignment5;
 
 import java.util.*;
 
-public class SpiralMatrix {
+public class SpiralMatrix { // extra credit 2
   private List<Integer> list = new ArrayList<Integer>();
 
   public List<Integer> spiralOrder(int[][] matrix) {
