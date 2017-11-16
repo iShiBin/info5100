@@ -45,7 +45,7 @@ class Partition {
     nums = new int[] { 1, 5, 3 };
     System.out.println(new Partition().findPartition(nums));
     
-    nums = new int[]{-1,2,1};
+    nums = new int[]{-1,-2,-3, -2};
     System.out.println(new Partition().findPartition(nums));
     
 //    generate an integer array with 100 numbers range from -100 to 100
