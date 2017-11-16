@@ -12,7 +12,7 @@ public class Candy extends DessertItem {
     return (int) (weight*pricePerPound+0.5);
   }
   
-  Candy(){}
+  Candy(){} // you can remove these constructors as we don't want to create items without its attributes
   Candy(String name, double weight, int price){
     super(name);
     this.pricePerPound=price;
