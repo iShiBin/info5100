@@ -1,0 +1,4 @@
+id~webId~category~year~make~model~trim~type~price~photo
+2903315183~gmps-camino~new~2016~Chevrolet~4500 Gas~2WD Reg Cab 150&quot;~~56001.0~http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/24174x90.jpg
+2774517143~gmps-camino~new~2016~Chevrolet~Cruze~Sedan L~CAR~17495.0~http://inventory-dmg.assets-cdk.com/RTT/Chevrolet/2016/3077853/default/ext_GAZ_deg01x90.jpg
+2804696613~shi-camino~new~2016~Chevrolet~Express Commercial Cutaway~3500 Van 159&quot;~COMMERCIAL VEHICLE~39500.0~http://inventory-dmg.assets-cdk.com/chrome_jpgs/2016/15879x90.jpg
