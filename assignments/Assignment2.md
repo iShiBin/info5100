@@ -163,7 +163,7 @@ However, the number `input` could be a negetive integer. In such case, we need t
 ## Solution
 
 ```java
-  public int addDigits(int input) {   // for input = 37, expected output = 1, your output 10
+  public int addDigits(int input) {
     if (input < 0) input = -input;
     int sum = 0;
     while (input != 0) {
@@ -171,7 +171,7 @@ However, the number `input` could be a negetive integer. In such case, we need t
       sum += input % 10;
       input /= 10;
     }
-    return sum; // return sum<10 ? sum : addDigits(sum);
+    return return sum<10 ? sum : addDigits(sum);
   }
 ```
 
