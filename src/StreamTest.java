@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class TestStream {
+public class StreamTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

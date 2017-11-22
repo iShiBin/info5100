@@ -35,7 +35,7 @@ class Student {
   }
 }
 
-class EqualAndHashCode {
+class HashLab {
 
   public static void main(String[] args) {
     Map<Student, Integer> map = new HashMap<Student, Integer>();
@@ -48,6 +48,12 @@ class EqualAndHashCode {
     map.put(new Student("Bin"), 2);
 
     System.out.println(map);
+    
+    Map<Integer, String> override=new HashMap<>();
+    override.put(1, "one");
+    override.put(1, "ONE");
+    
+    System.out.println(override);
 
   }
 }
