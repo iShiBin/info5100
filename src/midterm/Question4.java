@@ -36,7 +36,7 @@ public class Question4 {
   }
   
   public static void main(String[] args) {
-    int m = 6, n = 4;
+    int m = 6, n = 2;
 
     Question4 test = new Question4();
     for (int x = 1; x <= 25; x++) {
