@@ -1,3 +1,6 @@
+/* 
+Awesome work score 10 + extra credit 2
+*/
 package assignment6;
 
 import java.io.*;
