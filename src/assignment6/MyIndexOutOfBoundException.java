@@ -2,7 +2,7 @@ package assignment6;
 
 import java.util.Random;
 
-class MyIndexOutOfBoundException extends RuntimeException {
+class MyIndexOutOfBoundException extends RuntimeException { // score 2
   int lowerBound, upperBound, index;
 
   MyIndexOutOfBoundException() {
