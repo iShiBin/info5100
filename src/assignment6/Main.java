@@ -1,3 +1,4 @@
+//score 1
 package assignment6;
 
 import java.io.File;
