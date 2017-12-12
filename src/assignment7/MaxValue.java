@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
  * 
  * @author bin
  */
-class MaxValue extends Thread {
+class MaxValue extends Thread { // score 2
   private int low, high;
   private int[] nums;
   private int max = Integer.MIN_VALUE;
