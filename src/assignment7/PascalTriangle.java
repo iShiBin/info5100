@@ -7,7 +7,7 @@ package assignment7;
  */
 import java.util.*;
 
-class PascalTriangle {
+class PascalTriangle { // score 2
   public void printPascalTriangle(int n){
     List<List<Long>> list=generate(n);
     for(List<Long> l:list){
