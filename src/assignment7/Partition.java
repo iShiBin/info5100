@@ -1,3 +1,6 @@
+/* Good Work
+ * Score 2 + extra credit 2; Total score 10
+ */
 package assignment7;
 
 import java.util.*;
@@ -15,7 +18,7 @@ import java.util.stream.*;
  * 
  * @author bin
  */
-class Partition {
+class Partition { // extra credit 2
   public boolean findPartition(int arr[]) {
     if(arr==null || arr.length<2) return false;
     
