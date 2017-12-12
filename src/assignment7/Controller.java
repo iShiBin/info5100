@@ -17,7 +17,7 @@ import java.util.Random;
  *
  */
 
-class Controller extends Thread {
+class Controller extends Thread { // score 2
   private Device device;
   private Sensor heat, pressure;
 
