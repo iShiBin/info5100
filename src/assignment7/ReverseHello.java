@@ -12,7 +12,7 @@ package assignment7;
  * @author bin
  *
  */
-class ReverseHello implements Runnable {
+class ReverseHello implements Runnable { // score 2
   private static final int LIMIT = 50;
   private static int counter = 0;
   private int num = 0;
