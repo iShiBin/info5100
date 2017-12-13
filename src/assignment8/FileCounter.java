@@ -3,7 +3,7 @@ package assignment8;
 import java.io.*;
 import java.util.*;
 
-public class FileCounter {
+public class FileCounter { // score 3
 
   private int characterCount, wordCount, lineCount;
 
