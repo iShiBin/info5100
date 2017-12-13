@@ -5,7 +5,8 @@
 * Deadline is 11:59PM, Nov 4th, Saturday.
 * Upload this to the same repository of the Assignments.
 * Conatact us if any assistance is needed.
-
+### Score and Comments
+Awesome Work. score = 20
 ## Game of Hearts
 
 This project is a big one, but hopefully the subject will be familiar. Your task is to write a program that plays the game of Hearts. Start with the prototype suggested in the text and enhance it until you get everything in the following UML class diagram.
