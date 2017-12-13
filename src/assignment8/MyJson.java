@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import javax.*;
 
-public class MyJson {
+public class MyJson {// score 3
   /**
    * read from the file, create vehicle objects, add them to an arrayList and
    * return the arrayList.
