@@ -8,16 +8,17 @@ Through hands-on weekly lab sessions, students practice the development of appli
 This class was designed to meet the needs of engineering students with a limited programming background. Students who do have a programming background will learn how to design and architect software the right way.
 
 # Repository Structure
-├── README.md
-├── assignments: actual work of assignments in markdown format.
-├── build
-├── data: data and supporting files
-├── doc: java doc
-├── head-first2: course material
-├── notes: class notes
-├── projects: for fun 😊 
-├── resource: other resources
-└── src: some java source code
+├── README.md  
+├── assignments: actual work of assignments in markdown format.  
+├── build  
+├── data: data and supporting files  
+├── doc: java doc  
+├── head-first2: course material  
+├── notes: class notes  
+├── projects: for fun 😊   
+├── resource: other resources  
+└── src: some java source code  
+
 
 # What I Have Learnt
 - Programing fluently in the Java programming language
@@ -36,5 +37,5 @@ This class was designed to meet the needs of engineering students with a limited
 - [Inventory Management](/projects/inventory-management/)
   Source Code: https://github.com/iShiBin/inventory-management/src/com/neuSep17/ui/InventoryEditUI.java
 
-# Grade GPA
-4.0/4.0
+# Grade
+4.0/4.0(GPA)
