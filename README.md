@@ -1,5 +1,6 @@
+Application Engineering and Development
+
 # Course Information
-**Application Engineering and Development**
 
 Students will learn innovative software programming techniques that will enable them to properly design and build any kind of application quickly. 
 
