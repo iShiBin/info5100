@@ -34,7 +34,7 @@ This class was designed to meet the needs of engineering students with a limited
 # Course Projects
 - [Hang Man](/projects/hang-man)
 - [Game of Hearts](/projects/game-of-hearts)
-- [Inventory Management](/projects/inventory-management/)
+- [Inventory Management](/projects/inventory-management/)  
   Source Code: https://github.com/iShiBin/inventory-management/src/com/neuSep17/ui/InventoryEditUI.java
 
 # Grade
