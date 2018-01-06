@@ -1,4 +1,4 @@
-Application Engineering and Development
+# INFO5100: Application Engineering and Development
 
 # Course Information
 
