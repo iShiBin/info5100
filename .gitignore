@@ -90,3 +90,5 @@ hs_err_pid*
 # private files
 /src/midterm/MidtermResults.pdf
 
+# other local files
+/local/

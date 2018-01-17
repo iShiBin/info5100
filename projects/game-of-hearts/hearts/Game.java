@@ -75,8 +75,9 @@ public class Game {
       this.tricks.add(trick);
       
       /*
-       *  If it’s the first trick, set index equal to the index of the lowest club in the hand of the player having the lowest club,
-       *  and set card equal to a reference to that card. Have that player remove that card, and update the trick.
+       *  If it’s the first trick, set index equal to the index of the lowest club 
+       *  in the hand of the player having the lowest club, and set card equal to a reference to that card. 
+       *  Have that player remove that card, and update the trick.
        */
       if (this.numberOfTricks != 0) {
 //        If it’s not the first trick, set card equal to the value returned by player.playACard.
@@ -92,7 +93,8 @@ public class Game {
       this.players.get(playerNum).getCards().remove(card);
       /*
        * Then loop through all remaining players, and for each such player, increment the player number, 
-       * using % PLAYERS to count in a circle, assign the value returned by playACard to card, and display the player number and card value. 
+       * using % PLAYERS to count in a circle, assign the value returned by playACard to card, 
+       * and display the player number and card value. 
        */
       int startPlayer=playerNum;
       while((++playerNum % this.PLAYERS)!=startPlayer){
